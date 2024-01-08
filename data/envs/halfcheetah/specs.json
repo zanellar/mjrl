@@ -1,0 +1,33 @@
+{
+    "_info": "halfcheetah", 
+    "states": {
+        "pos_rootz":    {"id": "joint", "type": "joint", "var":"qpos", "dim": 1},
+        "pos_rooty":   {"id": "joint", "type": "joint", "var":"qpos", "dim": 1},
+        "pos_bthigh":   {"id": "joint", "type": "joint", "var":"qpos", "dim": 1},
+        "pos_bshin":   {"id": "joint", "type": "joint", "var":"qpos", "dim": 1},
+        "pos_bfoot":    {"id": "joint", "type": "joint", "var":"qpos", "dim": 1},
+        "pos_fthigh":   {"id": "joint", "type": "joint", "var":"qpos", "dim": 1},
+        "pos_fshin":   {"id": "joint", "type": "joint", "var":"qpos", "dim": 1},
+        "pos_ffoot":   {"id": "joint", "type": "joint", "var":"qpos", "dim": 1},
+        "pos_rootx":    {"id": "joint", "type": "joint", "var":"qvel", "dim": 1},
+        "vel_rooty":   {"id": "joint", "type": "joint", "var":"qvel", "dim": 1},
+        "vel_bthigh":   {"id": "joint", "type": "joint", "var":"qvel", "dim": 1},
+        "vel_bshin":   {"id": "joint", "type": "joint", "var":"qvel", "dim": 1},
+        "vel_bfoot":    {"id": "joint", "type": "joint", "var":"qvel", "dim": 1},
+        "vel_fthigh":   {"id": "joint", "type": "joint", "var":"qvel", "dim": 1},
+        "vel_fshin":   {"id": "joint", "type": "joint", "var":"qvel", "dim": 1},
+        "vel_ffoot":   {"id": "joint", "type": "joint", "var":"qvel", "dim": 1} 
+    },
+    "actions": { 
+        "tau_bthigh": {"id": "bthigh"},
+        "tau_bshin": {"id": "bshin"},
+        "tau_bfoot": {"id": "bfoot"},
+        "tau_fthigh": {"id": "fthigh"},
+        "tau_fshin": {"id": "fshin"},
+        "tau_ffoot": {"id": "ffoot"}  
+    },
+    "environment": {
+        "fixed_frame": null, 
+        "control_frequency": 50
+    } 
+}

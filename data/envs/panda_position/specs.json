@@ -1,0 +1,27 @@
+{
+    "_info": "panda in joint torques control",  
+    "states": {
+        "q1":       {"id": "panda_joint1", "type": "joint", "var":"qpos", "dim": 1},
+        "q2":       {"id": "panda_joint2", "type": "joint", "var":"qpos", "dim": 1},
+        "q3":       {"id": "panda_joint3", "type": "joint", "var":"qpos", "dim": 1},
+        "q4":       {"id": "panda_joint4", "type": "joint", "var":"qpos", "dim": 1},
+        "q5":       {"id": "panda_joint5", "type": "joint", "var":"qpos", "dim": 1},
+        "q6":       {"id": "panda_joint6", "type": "joint", "var":"qpos", "dim": 1},
+        "q7":       {"id": "panda_joint7", "type": "joint", "var":"qpos", "dim": 1}, 
+        "eef":      {"id": "end_effector", "type": "site", "var":"xpos", "dim": 3}, 
+        "target":   {"id": "target_point", "type": "site", "var":"xpos", "dim": 3} 
+    },
+    "actions": {  
+        "q1ref":     {"id": "panda_actuator_joint1"},
+        "q2ref":     {"id": "panda_actuator_joint2"},
+        "q3ref":     {"id": "panda_actuator_joint3"},
+        "q4ref":     {"id": "panda_actuator_joint4"},
+        "q5ref":     {"id": "panda_actuator_joint5"},
+        "q6ref":     {"id": "panda_actuator_joint6"},
+        "q7ref":     {"id": "panda_actuator_joint7"}
+    },
+    "environment": {
+        "fixed_frame": "panda_link0", 
+        "control_frequency": 125
+    }
+}

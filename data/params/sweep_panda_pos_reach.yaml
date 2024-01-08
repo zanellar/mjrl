@@ -1,0 +1,64 @@
+
+method: grid 
+
+metric:
+    goal: maximize
+    name: rollout/ep_rew_mean
+
+settings:
+  env_id: panda_pos_reach
+  run_id: reach
+  algorithm: SAC
+  training_horizon: 50000
+  expl_episode_horizon: 2500
+  eval_episode_horizon: 500
+  eval_model_freq: 1000
+  num_eval_episodes: 3
+  env_eval_rendering: true
+  early_stopping: false
+  max_no_improvement_evals: 100
+  min_evals: 100
+  callbacks: {}
+
+parameters:
+  seed:  
+    distribution: int_uniform
+    max: 1000
+    min: 0
+  learning_rate: 
+    values: 
+    - 0.0001
+    - 0.001
+    - 0.00001
+  learning_starts:  
+    value: 2500
+  buffer_size:  
+    value: 1000000
+  batch_size:  
+    value: 256
+  gamma:  
+    value: 0.99
+  tau:  
+    value: 0.005
+  train_freq:  
+    value: "50_step"
+  gradient_steps:  
+    values: 
+    - 1
+    - 10
+  exploration_noise:  
+    value: "gaussian"
+  exploration_sigma:  
+    value: 0.1 
+  use_sde_at_warmup:  
+    value: false
+  use_sde:  
+    value: false
+  sde_sample_freq:  
+    value: -1
+  target_update_interval:  
+    value: 1
+  ent_coef:  
+    value: "auto"
+  policy_kwargs:  
+    value: {}

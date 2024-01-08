@@ -1,0 +1,33 @@
+settings:
+  env_id: panda_pos_reach
+  run_id: tmpdev
+  algorithm: sac
+  training_horizon: 30000
+  expl_episode_horizon: 2500
+  eval_episode_horizon: 500
+  eval_model_freq: 1000
+  num_eval_episodes: 3
+  env_eval_rendering: true
+  early_stopping: false
+  max_no_improvement_evals: 100
+  min_evals: 100
+  callbacks: {}
+
+parameters:
+  seed: 0
+  learning_rate: 0.0003
+  learning_starts: 2500
+  buffer_size: 1000000
+  batch_size: 256
+  gamma: 0.99
+  tau: 0.005
+  train_freq: "50_step"
+  gradient_steps: 1
+  exploration_noise: "gaussian"
+  exploration_sigma: 0.1 
+  use_sde_at_warmup: false
+  use_sde: false
+  sde_sample_freq: -1
+  target_update_interval: 1
+  ent_coef: "auto"
+  policy_kwargs: {}
