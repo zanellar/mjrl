@@ -18,7 +18,14 @@ sweep_id = wandb.sweep(
 )      
 
 trainer = Trainer(
-    env = Environment(),  
+    env = Environment(
+        max_episode_length=config["settings"]["expl_episode_horizon"], 
+        render_mode="rgb_array"
+    ),  
+    enveval = Environment(
+        max_episode_length=config["settings"]["eval_episode_horizon"], 
+        render_mode="rgb_array"
+    ), 
     config = config, 
     sweep = True
 )

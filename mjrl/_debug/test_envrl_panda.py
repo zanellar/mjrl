@@ -10,7 +10,7 @@ env = Environment(
 ) 
 
 obs = env.reset()
-for i in range(10000):
+for i in range(1000):
     action = [0, 0.2, 0, 0.7, 0, 0, 0]
     obs, reward, terminated, truncated, info = env.step(action)
     env.render() 

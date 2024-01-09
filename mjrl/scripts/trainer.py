@@ -48,8 +48,9 @@ class Trainer():
                 # reinit = True
                 )
             self.params = wandb.config  
-    
-        # if self.settings.env_eval_rendering: # BUG
+
+        if self.settings.env_eval_rendering: # BUG 
+            self.env = Monitor(self.env)    
         #     def make_env(): 
         #         return Monitor(self.env)    
         #     self.env = DummyVecEnv([make_env])  
@@ -75,7 +76,7 @@ class Trainer():
   
         ###################### AGENT ######################## 
 
-        if self.params.exploration_noise is None: 
+        if self.params.exploration_noise is None or self.params.exploration_noise=="none": 
             action_noise = None 
         else: 
             if self.params.exploration_noise=="walk":
@@ -111,7 +112,7 @@ class Trainer():
                 ent_coef = self.params.ent_coef,
                 policy_kwargs = self.params.policy_kwargs,
                 #
-                verbose = 1 
+                verbose = 0 
             ) 
   
         new_logger = configure(LOGS_PATH, ["stdout", "csv", "tensorboard"])
@@ -155,7 +156,7 @@ class Trainer():
                 eval_freq = self.settings.eval_model_freq,
                 n_eval_episodes = self.settings.num_eval_episodes, 
                 deterministic = True, 
-                render = False,
+                render = self.settings.env_eval_rendering,
                 callback_after_eval = early_stop_callback 
             ) 
         )  # BUG: need to comment "sync_envs_normalization" function in EvalCallback._on_step() method 

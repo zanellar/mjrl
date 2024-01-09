@@ -8,14 +8,15 @@ from mjrl.utils.gym import EnvGymBase
 class Environment(EnvGymBase): 
   
   TARGET_RANGE = [[ 0.2, 0.8], [-0.3, 0.3], [0.4, 0.8]]
-  WORKSPACE_BARRIERS = [[0.0, 1], [-0.5, 0.5], [0.2, 1.0]]
+  # WORKSPACE_BARRIERS = [[0.0, 1], [-0.5, 0.5], [0.2, 1.0]]
   # WORKSPACE_BARRIERS = [[-1.5, 1.5], [-1.5, 1.5], [0.2, 1.5]]
+  WORKSPACE_BARRIERS = None
   SUCCESS_THRESHOLD = 0.05
 
   def __init__(self, 
               init_joint_config = "random", 
               max_episode_length = 5000, 
-              render_mode = "rgb_array",
+              render_mode = "human",
               debug = False,
               log = 0
               ):
@@ -33,13 +34,14 @@ class Environment(EnvGymBase):
     )
 
     # get position of the workspace 
-    # ws_pos = np.zeros(3) 
-    # ws_size = np.zeros(3)
-    # for i in range(len(self.WORKSPACE_BARRIERS)):
-    #   ws_pos[i] = (self.WORKSPACE_BARRIERS[i][0] + self.WORKSPACE_BARRIERS[i][1])/2
-    #   ws_size[i] = (self.WORKSPACE_BARRIERS[i][1] - self.WORKSPACE_BARRIERS[i][0])/2
-    # self.sim.set_site_pos("workspace",ws_pos)
-    # self.sim.set_site_size("workspace",ws_size)
+    # if self.WORKSPACE_BARRIERS is not None: 
+      # ws_pos = np.zeros(3) 
+      # ws_size = np.zeros(3)
+      # for i in range(len(self.WORKSPACE_BARRIERS)):
+      #   ws_pos[i] = (self.WORKSPACE_BARRIERS[i][0] + self.WORKSPACE_BARRIERS[i][1])/2
+      #   ws_size[i] = (self.WORKSPACE_BARRIERS[i][1] - self.WORKSPACE_BARRIERS[i][0])/2
+      # self.sim.set_site_pos("workspace",ws_pos)
+      # self.sim.set_site_size("workspace",ws_size)
 
     self.num_successful_episodes = 0
     self.reward = 0 
@@ -64,23 +66,27 @@ class Environment(EnvGymBase):
     '''
     target_pos = self.sim.get_obj_pos("target_point")
     eef_pos = self.sim.get_obj_pos("end_effector")  
-
-    # the gripper goes out of the desired work space
-    for i in range(len(eef_pos)):
-      minv = self.WORKSPACE_BARRIERS[i][0]
-      maxv = self.WORKSPACE_BARRIERS[i][1]
-      if eef_pos[i]<minv or eef_pos[i]>maxv:
-        if self.log > 0:
-          print(f"EFF out of the workspace along axis {i}:  {eef_pos[i]} not in range [{minv},{maxv}]") 
-        # exit("@@@@@@")
-        return True
-
+    if self.WORKSPACE_BARRIERS is not None:  
+      for i in range(len(eef_pos)):
+        minv = self.WORKSPACE_BARRIERS[i][0]
+        maxv = self.WORKSPACE_BARRIERS[i][1]
+        if eef_pos[i]<minv or eef_pos[i]>maxv:
+          if self.log > 0:
+            print(f"EFF out of the workspace along axis {i}:  {eef_pos[i]} not in range [{minv},{maxv}]") 
+          # exit("@@@@@@")
+          return True
+        
     # reaches the target
     # if np.linalg.norm(eef_pos-target_pos, axis = -1) < self.SUCCESS_THRESHOLD:
     #   self.num_successful_episodes += 1
     #   #print(f"{np.linalg.norm(eef_pos-target_pos, axis = -1)}<{self.SUCCESS_THRESHOLD}")
     #   return True 
 
+
+    # the robot hits something
+    # TODO
+
+  
     # the robot hits something
     # TODO
 
@@ -90,8 +96,8 @@ class Environment(EnvGymBase):
     target_pos = self.sim.get_obj_pos("target_point")
     eef_pos = self.sim.get_obj_pos("end_effector")  
     dist = np.linalg.norm(eef_pos-target_pos, axis = -1)   
-    r = 1/(dist**2+0.01)
-    # r = -dist 
+    # r = 1/(dist+0.01)
+    r = -dist 
     #print(r)
     return r
 
@@ -117,9 +123,12 @@ class Environment(EnvGymBase):
     self.action = action  
     _, terminated = self.sim.execute(self.action)    
     self.reward = self.get_reward(info) 
-    self.obs = self.get_obs()
-    if not terminated: 
-      truncated = self._check_episode_truncate() 
+    self.obs = self.get_obs() 
+    truncated = self._check_episode_truncate() if not terminated else False 
+    
+    if self.debug:
+      print(f"action={self.action}, reward={self.reward}, terminated={terminated}, truncated={truncated}")
+      self.render() 
 
     return self.obs, self.reward, terminated, truncated, info
 
@@ -133,11 +142,11 @@ class Environment(EnvGymBase):
     eef = np.array(sim_state[7:10])
     target = np.array(sim_state[10:13])
 
-    dist = eef-target
+    eef_target_error = eef-target
 
     obs = np.concatenate([
       np.sin(qpos),
       np.cos(qpos), 
-      np.tanh(dist),
+      np.tanh(eef_target_error),
     ]).astype(np.float32)  
     return obs

@@ -16,13 +16,21 @@ with open(config_file_path, "r") as stream:
 run = wandb.init(
     sync_tensorboard = True, 
     project = "mjrl",
-    monitor_gym = True, # automatically upload gym environements' videos
-    save_code = False,
-    mode = "online"
+    # monitor_gym = True, # automatically upload gym environements' videos
+    # save_code = True,
+    mode = "online" # disable wandb
 ) 
   
 trainer = Trainer(
-    env = Environment(),  
+    env = Environment(
+        max_episode_length=config["settings"]["expl_episode_horizon"], 
+        render_mode="human",
+        debug = False
+    ),  
+    enveval = Environment(
+        max_episode_length=config["settings"]["eval_episode_horizon"], 
+        render_mode="human"
+    ),
     config = config 
 ) 
  
