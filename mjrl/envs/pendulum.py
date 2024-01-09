@@ -12,7 +12,9 @@ class Pendulum(EnvGymBase):
               max_episode_length=5000, 
               init_joint_config = [0], 
               init_joint_config_std_noise = 0,
+              render_mode = "rgb_array",
               debug = False,
+              log = 0,
               folder_path = None,
               env_name = "pendulum",
               hard_reset = False,
@@ -20,6 +22,10 @@ class Pendulum(EnvGymBase):
               ):
     super(Pendulum, self).__init__()
  
+    self.debug = debug   
+    self.log = log
+    self.render_mode = render_mode
+  
     self.debug = debug 
     self.hard_reset = hard_reset
     self.reward_id = reward_id

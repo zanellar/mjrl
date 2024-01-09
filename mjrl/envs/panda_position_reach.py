@@ -7,13 +7,15 @@ from mjrl.utils.gym import EnvGymBase
 
 class Environment(EnvGymBase): 
   
-  TARGET_RANGE = [[ 0.3, 0.6], [-0.5, 0.5], [0.3, 0.8]]
-  WORKSPACE_BARRIERS = [[0.0, 0.9], [-0.9, 0.9], [0.2, 1.0]]
+  TARGET_RANGE = [[ 0.2, 0.8], [-0.3, 0.3], [0.4, 0.8]]
+  WORKSPACE_BARRIERS = [[0.0, 1], [-0.5, 0.5], [0.2, 1.0]]
+  # WORKSPACE_BARRIERS = [[-1.5, 1.5], [-1.5, 1.5], [0.2, 1.5]]
   SUCCESS_THRESHOLD = 0.05
 
   def __init__(self, 
               init_joint_config = "random", 
               max_episode_length = 5000, 
+              render_mode = "rgb_array",
               debug = False,
               log = 0
               ):
@@ -21,6 +23,7 @@ class Environment(EnvGymBase):
     
     self.debug = debug   
     self.log = log
+    self.render_mode = render_mode
   
     # Env params
     self.sim = MjEnv(
@@ -28,6 +31,15 @@ class Environment(EnvGymBase):
       max_episode_length = max_episode_length,
       init_joint_config = init_joint_config 
     )
+
+    # get position of the workspace 
+    # ws_pos = np.zeros(3) 
+    # ws_size = np.zeros(3)
+    # for i in range(len(self.WORKSPACE_BARRIERS)):
+    #   ws_pos[i] = (self.WORKSPACE_BARRIERS[i][0] + self.WORKSPACE_BARRIERS[i][1])/2
+    #   ws_size[i] = (self.WORKSPACE_BARRIERS[i][1] - self.WORKSPACE_BARRIERS[i][0])/2
+    # self.sim.set_site_pos("workspace",ws_pos)
+    # self.sim.set_site_size("workspace",ws_size)
 
     self.num_successful_episodes = 0
     self.reward = 0 

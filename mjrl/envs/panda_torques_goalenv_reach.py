@@ -13,11 +13,16 @@ class PandaTorquesGoalReach(EnvGymGoalBase):
   def __init__(self, 
               max_episode_length = 5000, 
               init_joint_config = 'random',
-              debug = False
+              render_mode = "rgb_array",
+              debug = False,
+              log = 0
               ):
     super(PandaTorquesGoalReach, self).__init__()
     
-    self.debug = debug 
+    self.debug = debug   
+    self.log = log
+    self.render_mode = render_mode
+  
     
     # Env params
     self.sim = MjEnv(

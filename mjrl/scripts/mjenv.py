@@ -230,7 +230,16 @@ class MjEnv(object):
         '''
         self._site_forced[name] = pos
         site_id = self._sim.model.site_name2id(name)
-        self._sim.data.site_xpos[site_id] = pos
+        self._sim.data.site_xpos[site_id] = pos 
+ 
+    def set_site_size(self, name, size):
+        ''' 
+        set the size of a site in the simulation
+        @param name: name of the site
+        @param size: size of the site
+        '''
+        site_id = self._sim.model.site_name2id(name)
+        self._sim.model.site_size[site_id] = size
 
     def set_body_pos(self, name, pos):
         '''

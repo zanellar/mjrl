@@ -5,7 +5,7 @@ import wandb
 from mjrl.envs.panda_position_reach import Environment
 from mjrl.utils.paths import LOGS_PATH, PARAMS_PATH, WEIGHTS_PATH
 from mjrl.scripts.trainer import Trainer
-from mjrl.utils.argsutils import Dict2Args
+from mjrl.utils.argsutils import Dict2Args 
     
 # Load training config file (yaml)
 config_file_path = os.path.join(PARAMS_PATH, "sac_panda_pos_reach.yaml")
@@ -25,6 +25,7 @@ trainer = Trainer(
     env = Environment(),  
     config = config 
 ) 
+ 
 trainer.run()
 
 wandb.finish()

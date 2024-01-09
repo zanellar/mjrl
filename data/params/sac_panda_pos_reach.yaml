@@ -1,13 +1,12 @@
 settings:
   env_id: panda_pos_reach
-  run_id: tmpdev
   algorithm: sac
   training_horizon: 30000
   expl_episode_horizon: 2500
   eval_episode_horizon: 500
   eval_model_freq: 1000
   num_eval_episodes: 3
-  env_eval_rendering: true
+  env_eval_rendering: false
   early_stopping: false
   max_no_improvement_evals: 100
   min_evals: 100
