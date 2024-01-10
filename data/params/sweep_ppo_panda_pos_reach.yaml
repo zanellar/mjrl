@@ -25,8 +25,7 @@ parameters:
   learning_rate: 
     values: 
     - 0.001
-    - 0.0001
-    - 0.00001
+    - 0.0001 
   learning_starts:  
     value: 1000
   buffer_size:  
@@ -63,8 +62,6 @@ parameters:
     value: 0.5
   max_grad_norm:
     value: 0.5
-  target_kl:
-    value: "auto" 
   stats_window_size:
     value: 100
   policy_kwargs:  

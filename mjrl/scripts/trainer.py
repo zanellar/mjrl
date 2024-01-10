@@ -35,8 +35,8 @@ class Trainer():
         else:
             self.enveval = enveval
  
-        # torch.manual_seed(config.seed)  
-        # np.random.seed(config.seed)
+        torch.manual_seed(config.seed)  
+        np.random.seed(config.seed)
          
     def run(self):    
  

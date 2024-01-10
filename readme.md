@@ -63,10 +63,11 @@ The best model, tensorboard output and a .txt file with parameters and mean rewa
 Solution: delete file '/home/riccardo/miniconda3/envs/rl0/lib/libstdc++.so.6'.  https://stackoverflow.com/questions/72205522/glibcxx-3-4-29-not-found
 
 ## TODOS
-
-* riordinare wandb logs (c'è una folder 'wandb' nel root e alcuni file in data/logs mentre weights è vuota)
+ 
 * testare salvataggio e ripristino pesi
-* vorrei che i pesi si salvassero con il nome della wandb-run
-* testare training pendolo e panda_pos_reach 
+* testare training pendolo 
 * trovare un ordine sensato delle cartelle in mjrl
 * creare dei file di debug per environments generici
+* vectorized environment
+* wandb sync gym videos
+* 
