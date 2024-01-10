@@ -7,7 +7,7 @@ from mjrl.utils.paths import LOGS_PATH, PARAMS_PATH, WEIGHTS_PATH
 from mjrl.scripts.trainer import Trainer 
     
 # Load training config file (yaml)
-config_file_path = os.path.join(PARAMS_PATH, "sweep_panda_pos_reach.yaml")
+config_file_path = os.path.join(PARAMS_PATH, "sweep_ddpg_panda_pos_reach.yaml")
 with open(config_file_path, "r") as stream: 
     config = yaml.safe_load(stream)  
 

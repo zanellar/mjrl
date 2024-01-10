@@ -1,5 +1,3 @@
-import sys
-sys.path.append('/home/kvn/Super Duper Code/panda_mujoco/')
  
 from mjrl.envs.panda_position_reach import Environment
 
@@ -11,10 +9,16 @@ env = Environment(
 
 obs = env.reset()
 for i in range(1000):
-    action = [0, 0.2, 0, 0.7, 0, 0, 0]
+    action = [0, 0, 0, 0.05, 0, 0, 0]
     obs, reward, terminated, truncated, info = env.step(action)
     env.render() 
-    print(obs, reward, terminated, truncated)
+    print("@@@@@@@@@@@@@@@@@@:")
+    print("obs:", obs)
+    print("action:", action)
+    print("reward:", reward)
+    print("terminated:", terminated)
+    print("truncated:", truncated)
+
     if terminated: 
       obs = env.reset()   
 

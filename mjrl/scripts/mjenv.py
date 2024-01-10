@@ -26,6 +26,10 @@ https://github.com/openai/mujoco-py/blob/4830435a169c1f3e3b5f9b58a7c3d9c39bdf4ac
 
 class MjEnv(object):
 
+    TORQUE_ACTUATOR = 0
+    POSITION_ACTUATOR = 1
+    VELOCITY_ACTUATOR = 2
+
     def __init__(
         self, 
         env_name,
@@ -33,6 +37,7 @@ class MjEnv(object):
         specs=None, 
         init_joint_config=None, 
         init_joint_config_std_noise=0,
+        actuators_type=None,
         folder_path=None,  
         max_episode_length=None 
         ):
@@ -94,8 +99,7 @@ class MjEnv(object):
 
         self.states_specification = dict(shape=tuple(self.state_shape), type="float")
         self.actions_specification = dict(shape=tuple(self.action_shape), type="float")
- 
-
+  
         ##### MODEL #### 
         xml_path = os.path.join(env_data_folder, self.env_name, "arena.xml")  
         self._mjmodel = mujoco_py.load_model_from_path(xml_path)
@@ -110,6 +114,13 @@ class MjEnv(object):
         assert nsubsteps > 0, f"expected 'control_frequency'({self.control_frequency})<='simulation_frequency'({self.simulation_frequency}) " 
 
         self._sim = mujoco_py.MjSim(self._mjmodel, nsubsteps=nsubsteps)
+
+        # get actuators types
+        if actuators_type is None:
+            actuators_type = self.TORQUE_ACTUATOR
+        if isinstance(actuators_type, int):
+            actuators_type = [actuators_type]*num_actions
+        self.actuators_type = actuators_type
 
         # viewer 
         self._viewer = None
@@ -142,12 +153,17 @@ class MjEnv(object):
             self.set_body_pos(name,pos) 
  
     def execute(self, action):
-        ''' Takes a sorted list of actions (float), that are the torques to the motors'''
+        ''' Takes a sorted list of actions (float), that can be: the torques to the motors or the change in velocities or positions of the joints.'''
 
         self.action = action 
 
         for i in range(len(action)):
-            self._sim.data.ctrl[i] = self.action[i]
+            if self.actuators_type[i] == self.POSITION_ACTUATOR:
+                self._sim.data.ctrl[i] = self._sim.data.qpos[i] + self.action[i]
+            elif self.actuators_type[i] == self.VELOCITY_ACTUATOR:
+                self._sim.data.ctrl[i] = self._sim.data.qvel[i] + self.action[i]
+            else:
+                self._sim.data.ctrl[i] = self.action[i]
         
         self._sim.step()
 

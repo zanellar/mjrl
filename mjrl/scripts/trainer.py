@@ -5,7 +5,7 @@ import wandb
 
 from wandb.integration.sb3 import WandbCallback
 
-from stable_baselines3 import SAC, DDPG, TD3
+from stable_baselines3 import SAC, DDPG, TD3, PPO
 from stable_baselines3.common.callbacks import CallbackList, EvalCallback,CheckpointCallback, StopTrainingOnNoModelImprovement
 from stable_baselines3.common.noise import OrnsteinUhlenbeckActionNoise, NormalActionNoise, ActionNoise
 from stable_baselines3.common.evaluation import evaluate_policy 
@@ -114,6 +114,78 @@ class Trainer():
                 #
                 verbose = 0 
             ) 
+        elif self.settings.algorithm.lower()=="ddpg":
+            agent = DDPG(
+                policy = 'MlpPolicy',
+                env = self.env,  
+                buffer_size = self.params.buffer_size,
+                batch_size = self.params.batch_size,
+                learning_rate = self.params.learning_rate,
+                gamma = self.params.gamma,
+                action_noise = action_noise,
+                learning_starts = self.params.learning_starts,
+                train_freq = (int(self.params.train_freq.split("_")[0]), self.params.train_freq.split("_")[1]),
+                gradient_steps = self.params.gradient_steps,
+                seed = self.params.seed,
+                #
+                policy_kwargs = self.params.policy_kwargs,
+                #
+                verbose = 0 
+            )
+        elif self.settings.algorithm.lower()=="td3":
+            agent = TD3(
+                policy = 'MlpPolicy',
+                env = self.env,  
+                buffer_size = self.params.buffer_size,
+                batch_size = self.params.batch_size,
+                learning_rate = self.params.learning_rate,
+                gamma = self.params.gamma,
+                tau = self.params.tau,
+                action_noise = action_noise,
+                learning_starts = self.params.learning_starts,
+                train_freq = (int(self.params.train_freq.split("_")[0]), self.params.train_freq.split("_")[1]),
+                gradient_steps = self.params.gradient_steps,
+                seed = self.params.seed,
+                #
+                policy_kwargs = self.params.policy_kwargs,
+                policy_delay = self.params.policy_delay,
+                target_policy_noise = self.params.target_policy_noise, 
+                target_noise_clip = self.params.target_noise_clip,
+                #
+                verbose = 0 
+            )
+        elif self.settings.algorithm.lower()=="ppo":
+            agent = PPO(
+                policy = 'MlpPolicy',
+                env = self.env,  
+                buffer_size = self.params.buffer_size,
+                batch_size = self.params.batch_size,
+                learning_rate = self.params.learning_rate,
+                gamma = self.params.gamma,
+                tau = self.params.tau,
+                action_noise = action_noise,
+                learning_starts = self.params.learning_starts,
+                train_freq = (int(self.params.train_freq.split("_")[0]), self.params.train_freq.split("_")[1]),
+                gradient_steps = self.params.gradient_steps,
+                seed = self.params.seed,
+                #
+                ent_coef = self.params.ent_coef,
+                vf_coef = self.params.vf_coef,
+                max_grad_norm = self.params.max_grad_norm,
+                n_epochs = self.params.n_epochs,
+                gae_lambda = self.params.gae_lambda,
+                clip_range = self.params.clip_range,
+                clip_range_vf = self.params.clip_range_vf,
+                target_kl = self.params.target_kl,
+                use_sde = self.params.use_sde,
+                sde_sample_freq = self.params.sde_sample_freq,
+                stats_window_size = self.params.stats_window_size,
+                policy_kwargs = self.params.policy_kwargs,
+                #
+                verbose = 0 
+            )
+        
+        
   
         new_logger = configure(LOGS_PATH, ["stdout", "csv", "tensorboard"])
         agent.set_logger(new_logger)

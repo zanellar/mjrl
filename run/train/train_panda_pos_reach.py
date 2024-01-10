@@ -25,7 +25,7 @@ trainer = Trainer(
     env = Environment(
         max_episode_length=config["settings"]["expl_episode_horizon"], 
         render_mode="human",
-        debug = False
+        debug = True
     ),  
     enveval = Environment(
         max_episode_length=config["settings"]["eval_episode_horizon"], 

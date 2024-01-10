@@ -1,0 +1,60 @@
+
+method: grid 
+
+metric:
+    goal: maximize
+    name: rollout/ep_rew_mean
+
+settings:
+  env_id: panda_pos_reach
+  algorithm: DDPG 
+  training_horizon: 500000
+  expl_episode_horizon: 1000
+  eval_episode_horizon: 300
+  eval_model_freq: 5000
+  num_eval_episodes: 10
+  env_eval_rendering: false
+  early_stopping: false
+  max_no_improvement_evals: 100
+  min_evals: 100
+  callbacks: {}
+
+parameters:
+  seed:  
+    value: 0 
+  learning_rate: 
+    values: 
+    - 0.001
+    - 0.0001
+    - 0.00001
+  learning_starts:  
+    value: 1000
+  buffer_size:  
+    value: 1000000
+  batch_size:  
+    value: 256
+  gamma:  
+    value: 0.99 
+  tau:  
+    values: 
+    - 0.005
+    - 0.02
+  train_freq:  
+    values: 
+    - "50_step"
+    - "10_step"
+  gradient_steps:  
+    values: 
+    - 10 
+    - 50
+  exploration_noise:  
+    value: "gaussian"
+  exploration_sigma:  
+    values: 
+    - 0.2   
+    - 0.1
+    - 0.4
+  policy_kwargs:  
+    values: 
+    - {"net_arch": {"pi": [400, 300], "qf": [400, 300]}}
+    - {"net_arch": {"pi": [50,50,50], "qf": [50,50,50]}}

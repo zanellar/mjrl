@@ -30,7 +30,8 @@ class Environment(EnvGymBase):
     self.sim = MjEnv(
       env_name = "panda_position",   
       max_episode_length = max_episode_length,
-      init_joint_config = init_joint_config 
+      init_joint_config = init_joint_config,
+      actuators_type = MjEnv.POSITION_ACTUATOR,
     )
 
     # get position of the workspace 
@@ -52,7 +53,7 @@ class Environment(EnvGymBase):
     self.achieved_goal = self.sim.get_obj_pos("end_effector")  
 
     # Actions  
-    self.action_space = spaces.Box(low=-1, high=1., shape=self.sim.action_shape, dtype=np.float32)   
+    self.action_space = spaces.Box(low=-0.05, high=0.05, shape=self.sim.action_shape, dtype=np.float32)   
 
     # Observation space  
     self.observation_space =  spaces.Box(low=-1, high=1, shape=self.get_obs().shape, dtype=np.float32)
