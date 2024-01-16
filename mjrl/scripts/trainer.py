@@ -16,7 +16,6 @@ from stable_baselines3.common.vec_env import VecFrameStack, DummyVecEnv, VecVide
 
 
 from mjrl.utils.paths import ENVS_PATH, WEIGHTS_PATH, PLOTS_PATH, PARAMS_PATH, LOGS_PATH
-from mjrl.scripts.cbs import SaveTrainingLogsCallback
 from mjrl.utils.argsutils import Dict2Args
   
 class Trainer():
@@ -34,27 +33,28 @@ class Trainer():
             self.enveval = env
         else:
             self.enveval = enveval
- 
-        torch.manual_seed(config.seed)  
-        np.random.seed(config.seed)
+
          
     def run(self):    
  
         if self.sweep:
             wandb.init(
                 sync_tensorboard = True,
-                # monitor_gym = True,  
+                # monitor_gym = True,  # BUG env_eval_rendering
                 # save_code = False,
                 # reinit = True
                 )
             self.params = wandb.config  
 
-        if self.settings.env_eval_rendering: # BUG 
+        if self.settings.env_eval_rendering: # BUG env_eval_rendering
             self.env = Monitor(self.env)    
-        #     def make_env(): 
-        #         return Monitor(self.env)    
-        #     self.env = DummyVecEnv([make_env])  
-        #     self.env = VecVideoRecorder(self.env, "videos", record_video_trigger=lambda x: x % 100000 == 0, video_length=2000)  # record videos
+            # def make_env(): 
+            #     return Monitor(self.env)    
+            # self.env = DummyVecEnv([make_env])  
+            # self.env = VecVideoRecorder(self.env, "videos", record_video_trigger=lambda x: x % 100000 == 0, video_length=2000)  # record videos
+ 
+        torch.manual_seed(self.params.seed)  
+        np.random.seed(self.params.seed)
 
         ###################### PATHS ########################
         run_name = wandb.run.name
@@ -161,8 +161,7 @@ class Trainer():
                 buffer_size = self.params.buffer_size,
                 batch_size = self.params.batch_size,
                 learning_rate = self.params.learning_rate,
-                gamma = self.params.gamma,
-                tau = self.params.tau,
+                gamma = self.params.gamma, 
                 action_noise = action_noise,
                 learning_starts = self.params.learning_starts,
                 train_freq = (int(self.params.train_freq.split("_")[0]), self.params.train_freq.split("_")[1]),
@@ -219,7 +218,7 @@ class Trainer():
             ) 
         else:
             early_stop_callback = None
-
+  
         ###### EVALUATION 
         callbackslist.append(
             EvalCallback(
@@ -228,8 +227,8 @@ class Trainer():
                 eval_freq = self.settings.eval_model_freq,
                 n_eval_episodes = self.settings.num_eval_episodes, 
                 deterministic = True, 
-                render = self.settings.env_eval_rendering,
-                callback_after_eval = early_stop_callback 
+                render = self.settings.env_eval_rendering, 
+                callback_after_eval = early_stop_callback,
             ) 
         )  # BUG: need to comment "sync_envs_normalization" function in EvalCallback._on_step() method 
         

@@ -18,7 +18,7 @@ class EnvGymBase(gym.Env):
     self.action = None
     self.reward = None
   
-  def reset(self, goal=None, seed=None): 
+  def reset(self, seed=None): 
     super().reset(seed=seed)
     pass
   

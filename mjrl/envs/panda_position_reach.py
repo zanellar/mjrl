@@ -47,6 +47,7 @@ class Environment(EnvGymBase):
     self.num_successful_episodes = 0
     self.reward = 0 
     self.action = None
+    self.dist = None
 
     # Goal  
     self.goal = self.sim.get_obj_pos("target_point")
@@ -82,31 +83,25 @@ class Environment(EnvGymBase):
     #   self.num_successful_episodes += 1
     #   #print(f"{np.linalg.norm(eef_pos-target_pos, axis = -1)}<{self.SUCCESS_THRESHOLD}")
     #   return True 
-
-
+ 
     # the robot hits something
     # TODO
-
   
-    # the robot hits something
-    # TODO
-
     return False
  
   def get_reward(self, info): 
     target_pos = self.sim.get_obj_pos("target_point")
     eef_pos = self.sim.get_obj_pos("end_effector")  
-    dist = np.linalg.norm(eef_pos-target_pos, axis = -1)   
-    # r = 1/(dist+0.01)
-    r = -dist 
-    #print(r)
+    self.dist = np.linalg.norm(eef_pos-target_pos, axis = -1)   
+    # r = 1/(self.dist+0.01)
+    r = -self.dist  
     return r
 
   def set_goal(self, goal):
     self.sim.set_site_pos("target_point",goal)
     self.goal = self.sim.get_obj_pos("target_point")
 
-  def reset(self, hard_reset=True, random_goal=True, seed=0): 
+  def reset(self, random_goal=True, seed=0): 
     super().reset(seed=seed)
     if random_goal:
       new_goal = np.random.rand(len(self.goal))
@@ -114,7 +109,7 @@ class Environment(EnvGymBase):
       for i, r in enumerate(trange):  
         new_goal[i] = r[0] + (new_goal[i])*(r[1]-r[0])
       self.set_goal(new_goal)
-    self.sim.reset(hard_reset=hard_reset) 
+    self.sim.reset(hard_reset=True) 
     self.obs = self.get_obs() 
     info = {}
     return (self.obs, info)
@@ -142,12 +137,10 @@ class Environment(EnvGymBase):
     qpos = sim_state[0:7]
     eef = np.array(sim_state[7:10])
     target = np.array(sim_state[10:13])
-
-    eef_target_error = eef-target
-
+  
     obs = np.concatenate([
       np.sin(qpos),
       np.cos(qpos), 
-      np.tanh(eef_target_error),
+      np.tanh(eef-target),
     ]).astype(np.float32)  
     return obs

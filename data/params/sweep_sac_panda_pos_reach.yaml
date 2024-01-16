@@ -9,11 +9,11 @@ settings:
   env_id: panda_pos_reach
   algorithm: SAC
   training_horizon: 500000
-  expl_episode_horizon: 1000
-  eval_episode_horizon: 300
+  expl_episode_horizon: 250
+  eval_episode_horizon: 250
   eval_model_freq: 5000
   num_eval_episodes: 10
-  env_eval_rendering: false
+  env_eval_rendering: true
   early_stopping: false
   max_no_improvement_evals: 100
   min_evals: 100
@@ -24,11 +24,10 @@ parameters:
     value: 0 
   learning_rate: 
     values: 
-    - 0.001
-    - 0.0001
+    - 0.001 
     - 0.00001
   learning_starts:  
-    value: 1000
+    value: 250
   buffer_size:  
     value: 1000000
   batch_size:  
@@ -40,11 +39,9 @@ parameters:
     - 0.005
     - 0.02
   train_freq:  
-    values: 
-    - "50_step"
-    - "10_step"
+    value: "250_step" 
   gradient_steps:  
-    value: 10 
+    value: 250 
   exploration_noise:  
     value: "none"
   exploration_sigma:  
@@ -56,12 +53,13 @@ parameters:
   sde_sample_freq:  
     value: -1
   target_update_interval:  
-    values: 
+    values:  
+    - 7
     - 1
-    - 5
   ent_coef:  
     value: "auto"
   policy_kwargs:  
     values: 
-    - {"net_arch": {"pi": [400, 300], "qf": [400, 300]}}
-    - {"net_arch": {"pi": [50,50,50], "qf": [50,50,50]}}
+    - {"net_arch": {"pi": [30,30,30], "qf": [30,30,30]}}
+    - {"net_arch": {"pi": [16,32,16,8], "qf": [16,32,16,8]}}
+    - {"net_arch": {"pi": [16,16,16,16], "qf": [16,16,16,16]}}
