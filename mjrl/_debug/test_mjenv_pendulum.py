@@ -14,7 +14,7 @@ Test of ur5 environment using `mjenv` wrapper
 init_joint_config = [0]
 
 env = MjEnv(
-    env_name="pendulum",   
+    env_name="pendulum_torctrl",   
     max_episode_length=100,
     # init_joint_config= 'random'
     init_joint_config=init_joint_config 

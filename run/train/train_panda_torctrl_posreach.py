@@ -4,14 +4,14 @@ import wandb
 import numpy as np
 import torch
  
-from mjrl.envs.panda_position_reach import Environment
+from mjrl.envs.panda_torctrl_posreach import Environment
 from mjrl.utils.paths import LOGS_PATH, PARAMS_PATH, WEIGHTS_PATH
 from mjrl.scripts.trainer import Trainer
 from mjrl.utils.argsutils import Dict2Args 
 from mjrl.utils.evalwrap import EnvEvalWrapper
     
 # Load training config file (yaml)
-config_file_path = os.path.join(PARAMS_PATH, "sac_panda_pos_reach.yaml")
+config_file_path = os.path.join(PARAMS_PATH, "panda_torctrl_posreach", "train_sac.yaml")
 with open(config_file_path, "r") as stream: 
     config = yaml.safe_load(stream)   
  
@@ -25,7 +25,8 @@ run = wandb.init(
     project = "mjrl",
     # monitor_gym = True, # automatically upload gym environements' videos
     # save_code = True,
-    mode = "online" # disable wandb
+    mode = "online"  
+    # mode = "disabled"  
 ) 
   
 trainer = Trainer(

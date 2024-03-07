@@ -1,5 +1,5 @@
  
-from mjrl.envs.panda_position_reach import Environment
+from mjrl.envs.panda_posctrl_posreach import Environment
 
 env = Environment(
   max_episode_length=5000, 

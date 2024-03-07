@@ -8,10 +8,10 @@ from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 from stable_baselines3.common.callbacks import EvalCallback
 from mjrl.scripts.args.pkgpaths import PkgPath
-from mjrl.envrl.pendulum import Pendulum
+from mjrl.envrl.pendulum_torctrl import Pendulum
 
 
-AGENT_WEIGHTS_PATH = os.path.join(PkgPath.OUT_TEST_FOLDER,"/home/riccardo/projects/mjrlenvs/data/train/pendulum/3/checkpoints/SAC_1_0/all_cps/rl_model_162500_steps.zip")
+AGENT_WEIGHTS_PATH = os.path.join(PkgPath.OUT_TEST_FOLDER,"/home/riccardo/projects/mjrlenvs/data/train/pendulum_torctrl/3/checkpoints/SAC_1_0/all_cps/rl_model_162500_steps.zip")
 EPISODE_HORIZON = 500 # timesteps 
 RENDERING = True  
 NUM_EVAL_EPISODES = 1 

@@ -8,6 +8,13 @@
         "q5":       {"id": "panda_joint5", "type": "joint", "var":"qpos", "dim": 1},
         "q6":       {"id": "panda_joint6", "type": "joint", "var":"qpos", "dim": 1},
         "q7":       {"id": "panda_joint7", "type": "joint", "var":"qpos", "dim": 1}, 
+        "dq1":      {"id": "panda_joint1", "type": "joint", "var":"qvel", "dim": 1},
+        "dq2":      {"id": "panda_joint2", "type": "joint", "var":"qvel", "dim": 1},
+        "dq3":      {"id": "panda_joint3", "type": "joint", "var":"qvel", "dim": 1},
+        "dq4":      {"id": "panda_joint4", "type": "joint", "var":"qvel", "dim": 1},
+        "dq5":      {"id": "panda_joint5", "type": "joint", "var":"qvel", "dim": 1},
+        "dq6":      {"id": "panda_joint6", "type": "joint", "var":"qvel", "dim": 1}, 
+        "dq7":      {"id": "panda_joint7", "type": "joint", "var":"qvel", "dim": 1},
         "eef":      {"id": "end_effector", "type": "site", "var":"xpos", "dim": 3}, 
         "target":   {"id": "target_point", "type": "site", "var":"xpos", "dim": 3} 
     },

@@ -1,6 +1,6 @@
 
 from stable_baselines3.common.env_checker import check_env 
-from mjrl.envs.panda_position_reach import PandaPositionReach
+from mjrl.envs.panda_posctrl_posreach import PandaPositionReach
 
 
 env = PandaPositionReach()

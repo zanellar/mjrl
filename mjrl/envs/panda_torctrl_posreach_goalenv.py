@@ -26,7 +26,7 @@ class PandaTorquesGoalReach(EnvGymGoalBase):
     
     # Env params
     self.sim = MjEnv(
-      env_name = "panda_torque",
+      env_name = "panda_torctrl",
       max_episode_length=max_episode_length,
       init_joint_config=init_joint_config 
     )

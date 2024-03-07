@@ -1,5 +1,5 @@
 {
-    "_info": "pendulum with limited joint range", 
+    "_info": "pendulum_torctrl with limited joint range", 
     "states": {
         "q":    {"id": "joint", "type": "joint", "var":"qpos", "dim": 1},
         "dq":   {"id": "joint", "type": "joint", "var":"qvel", "dim": 1}

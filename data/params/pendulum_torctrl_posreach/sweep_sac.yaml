@@ -6,13 +6,13 @@ metric:
     name: rollout/ep_rew_mean
 
 settings:
-  env_id: panda_pos_reach
+  env_id: pendulum_torctrl_posreach
   algorithm: SAC
   training_horizon: 500000
-  expl_episode_horizon: 250
-  eval_episode_horizon: 250
-  eval_model_freq: 5000
-  num_eval_episodes: 10
+  expl_episode_horizon: 2500
+  eval_episode_horizon: 500
+  eval_model_freq: 10000
+  num_eval_episodes: 1
   env_eval_rendering: true
   early_stopping: false
   max_no_improvement_evals: 100
@@ -23,9 +23,7 @@ parameters:
   seed:  
     value: 0 
   learning_rate: 
-    values: 
-    - 0.001 
-    - 0.00001
+    value: 0.003 
   learning_starts:  
     value: 250
   buffer_size:  
@@ -35,15 +33,13 @@ parameters:
   gamma:  
     value: 0.99
   tau:  
-    values: 
-    - 0.005
-    - 0.02
+    value: 0.003 
   train_freq:  
-    value: "250_step" 
+    value: "500_step" 
   gradient_steps:  
-    value: 250 
+    value: 500 
   exploration_noise:  
-    value: "none"
+    value: "gaussian"
   exploration_sigma:  
     value: 0.1 
   use_sde_at_warmup:  
@@ -51,15 +47,12 @@ parameters:
   use_sde:  
     value: true
   sde_sample_freq:  
-    value: -1
+    value: 500
   target_update_interval:  
-    values:  
-    - 7
-    - 1
+    value:  5
   ent_coef:  
     value: "auto"
   policy_kwargs:  
     values: 
-    - {"net_arch": {"pi": [30,30,30], "qf": [30,30,30]}}
-    - {"net_arch": {"pi": [16,32,16,8], "qf": [16,32,16,8]}}
+    - {"net_arch": {"pi": [256,256], "qf": [256,256]}}
     - {"net_arch": {"pi": [16,16,16,16], "qf": [16,16,16,16]}}

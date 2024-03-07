@@ -1,5 +1,5 @@
  
-from mjrl.envrl.pendulum import Pendulum
+from mjrl.envrl.pendulum_torctrl import Pendulum
 
 env = Pendulum(
   max_episode_length=500, 

@@ -8,9 +8,12 @@
             tolerance="1e-10"
             impratio="20"
             gravity="0 0 -0.91" />
-    <size njmax="600" 
+    <!-- <size njmax="600" 
           nconmax="150" 
-          nstack="300000"/> 
+          nstack="300000"/>  -->
+    <size njmax="4000" 
+          nconmax="150" 
+          nstack="30000"/> 
 
 
     <include file="/assets/assets.xml"/>

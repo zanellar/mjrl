@@ -6,7 +6,10 @@ from gymnasium import spaces
 from mjrl.scripts.mjenv import MjEnv 
 from mjrl.utils.gym import EnvGymBase
  
-class Pendulum(EnvGymBase): 
+class Environment(EnvGymBase): 
+
+  NEGATIVE_REWARD = 0
+  POSITIVE_REWARD = 1
 
   def __init__(self, 
               max_episode_length=5000, 
@@ -14,26 +17,22 @@ class Pendulum(EnvGymBase):
               init_joint_config_std_noise = 0,
               render_mode = "rgb_array",
               debug = False,
-              log = 0,
-              folder_path = None,
-              env_name = "pendulum",
+              log = 0, 
               hard_reset = False,
               reward_id = 0,
               ):
-    super(Pendulum, self).__init__()
+    super(Environment, self).__init__()
  
+    # Settings
     self.debug = debug   
     self.log = log
-    self.render_mode = render_mode
-  
-    self.debug = debug 
+    self.render_mode = render_mode 
     self.hard_reset = hard_reset
     self.reward_id = reward_id
     
-    # Env params
+    # Simulator
     self.sim = MjEnv( 
-      env_name=env_name, 
-      folder_path=folder_path,
+      env_name="pendulum_torctrl",  
       max_episode_length=max_episode_length,
       init_joint_config=init_joint_config,
       init_joint_config_std_noise=init_joint_config_std_noise
@@ -45,32 +44,54 @@ class Pendulum(EnvGymBase):
     # Observations 
     self.observation_space = spaces.Box(low=-1.0, high=1.0, shape=(3,), dtype=np.float32) 
     
-    # Initialize   
+    # RL variables   
     self.action = None
     self.obs = None
     self.reward = None 
     self.terminated = False
+    self.truncated = False
     self.info = {}
+
+    # Metrics
+    self.err_pos = None
+
+    # Reset
+    self.reset()
 
   def reset(self, goal=None, seed=0 ):
     """ 
     :return: (np.array) 
     """   
     super().reset(seed=seed)
+
+    # reset simulation
     self.sim.reset(hard_reset=self.hard_reset )
+
+    # reset RL variables
     self.obs = self.get_obs() 
-    return self.obs
+    self.action = None
+    self.terminated = False
+    self.truncated = False
+    info = {}
+
+    # reset metrics
+    self.err_pos = 1. - self.obs[0]
+
+    return (self.obs, info) 
 
   def get_reward(self):   
     sin_pos, cos_pos,  tanh_vel = self.get_obs() 
-    err_pos = 1. - sin_pos  
+    self.err_pos = 1. - sin_pos  
     torque = self.action[0]
-    if self.reward_id == 0:
-      reward = -abs(err_pos) -0.1*abs(tanh_vel) -0.01*abs(torque)
-    elif self.reward_id == 1:
-      reward = 1/(1. + abs(err_pos) + 0.1*abs(tanh_vel) + 0.01*abs(torque)) 
+    if self.reward_id == self.NEGATIVE_REWARD:
+      reward = -abs(self.err_pos) -0.1*abs(tanh_vel) -0.01*abs(torque)
+    elif self.reward_id == self.POSITIVE_REWARD:
+      reward = 1/(1. + abs(self.err_pos) + 0.1*abs(tanh_vel) + 0.01*abs(torque)) 
     return reward
 
+  def _check_episode_truncate(self):
+    return False
+  
   def step(self, action):   
     self.action = action  
     _, terminated = self.sim.execute(self.action) 
@@ -78,6 +99,7 @@ class Pendulum(EnvGymBase):
     self.obs = self.get_obs()
     self.terminated = terminated
     self.info = {}
+    self.truncated = self._check_episode_truncate() if not terminated else False 
  
     return self.obs, self.reward, self.terminated, self.truncated, self.info
 

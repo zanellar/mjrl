@@ -1,5 +1,5 @@
 settings:
-  env_id: panda_pos_reach
+  env_id: panda_posctrl_posreach
   algorithm: sac
   training_horizon: 500000
   expl_episode_horizon: 1000
