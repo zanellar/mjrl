@@ -35,6 +35,7 @@ dependencies:
       - cloudpickle==2.1.0
       - cycler==0.11.0
       - cython==0.29.30
+      - decorator==4.4.2
       - docker-pycreds==0.4.0
       - farama-notifications==0.0.4
       - fasteners==0.15
@@ -53,6 +54,7 @@ dependencies:
       - h5py==3.7.0
       - idna==3.3
       - imageio==2.19.5
+      - imageio-ffmpeg==0.4.9
       - importlib-metadata==4.12.0
       - importlib-resources==6.1.1
       - jinja2==3.1.2
@@ -64,8 +66,8 @@ dependencies:
       - matplotlib==3.5.2
       - mdurl==0.1.2
       - monotonic==1.6
-      - mpmath==1.3.0
-      - mujoco-py==2.1.2.14
+      - moviepy==1.0.3
+      - mpmath==1.3.0 
       - networkx==3.1
       - numba==0.53.1
       - numpy==1.23.1
@@ -86,6 +88,7 @@ dependencies:
       - packaging==21.3
       - pandas==1.4.3
       - pillow==9.2.0
+      - proglog==0.1.10
       - protobuf==3.19.4
       - psutil==5.9.6
       - pyasn1==0.4.8
