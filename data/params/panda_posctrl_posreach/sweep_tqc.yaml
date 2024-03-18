@@ -27,7 +27,7 @@ parameters:
     - 43
     - 101 
   learning_rate: 
-    value: 0.005  
+    value: 0.003  
   learning_starts:  
     value: 500
   buffer_size:  
@@ -37,11 +37,16 @@ parameters:
   gamma:  
     value: 0.95
   tau:  
-    value: 0.05
+    values: 
+    - 0.05
+    - 0.005
+    - 0.8
   train_freq:  
     value: "500_step" 
   gradient_steps:  
-    value: 100 
+    values: 
+    - 100 
+    - 500 
   exploration_noise:  
     value: "gaussian"
   exploration_sigma:  
@@ -52,3 +57,4 @@ parameters:
     values: 
     - {"net_arch": {"pi": [512, 512, 512], "qf": [512, 512, 512]}}
     - {"net_arch": {"pi": [128, 128], "qf": [128, 128]}}
+    - {"net_arch": {"pi": [256, 256], "qf": [256, 256, 256]}}

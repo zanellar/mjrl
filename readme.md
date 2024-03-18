@@ -27,7 +27,7 @@ sudo apt install git
     # Replace user-name with your username
     echo -e 'export LD_LIBRARY_PATH=/home/<username>/.mujoco/mujoco210/bin 
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/nvidia 
-    export PATH="$LD_LIBRARY_PATH:$PATH"  >> ~/.bashrc
+    export PATH="$LD_LIBRARY_PATH:$PATH"' >> ~/.bashrc
     ```
     * Source bashrc.
     ```
@@ -52,9 +52,9 @@ sudo apt-get install libxslt1-dev zlib1g-dev libglew2.2 libglew-dev python3-pip
 cd ~/.mujoco
 git clone https://github.com/openai/mujoco-py
 cd mujoco-py
-pip install "cython<3"
 pip install -r requirements.txt
 pip install -r requirements.dev.txt
+pip install "cython<3"
 pip3 install -e . --no-cache
 ```
 5. Reboot your machine.
@@ -85,6 +85,7 @@ rm /home/<username>/miniconda3/envs/mjrl/bin/../lib/libstdc++.so.6
 
 
 ```
+cd mjrl
 conda env update --name mjrl --file environment.yml --prune
 pip install -e .
 ``` 
