@@ -1,0 +1,28 @@
+settings:
+  env_id: panda_posctrl_posreach
+  algorithm: tqc
+  training_horizon: 500000
+  expl_episode_horizon: 1000
+  eval_episode_horizon: 300
+  eval_model_freq: 5000
+  num_eval_episodes: 10
+  env_eval_rendering: false
+  early_stopping: false
+  max_no_improvement_evals: 100
+  min_evals: 100
+  callbacks: {}
+
+parameters:
+  seed: 0
+  learning_rate: 0.005
+  learning_starts: 1000
+  buffer_size: 1000000
+  batch_size: 2048
+  gamma: 0.95
+  tau: 0.05
+  train_freq: "500_step"
+  gradient_steps: 100
+  exploration_noise: "none"
+  exploration_sigma: 0.1  
+  target_update_interval: 1 
+  policy_kwargs:  {"net_arch": {"pi": [512, 512, 512], "qf": [512, 512, 512]}}

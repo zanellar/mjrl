@@ -1,0 +1,54 @@
+
+method: grid 
+
+metric:
+    goal: maximize
+    name: rollout/ep_rew_mean
+
+settings:
+  env_id: panda_posctrl_posreach
+  algorithm: TQC
+  training_horizon: 50000000
+  expl_episode_horizon: 500
+  eval_episode_horizon: 250
+  eval_model_freq: 10000
+  num_eval_episodes: 5
+  env_eval_rendering: true
+  early_stopping: false
+  max_no_improvement_evals: 100
+  min_evals: 100
+  callbacks: {}
+
+parameters:
+  seed:  
+    values: 
+    - 0
+    - 17
+    - 43
+    - 101 
+  learning_rate: 
+    value: 0.005  
+  learning_starts:  
+    value: 500
+  buffer_size:  
+    value: 1000000
+  batch_size:  
+    value: 2048
+  gamma:  
+    value: 0.95
+  tau:  
+    value: 0.05
+  train_freq:  
+    value: "500_step" 
+  gradient_steps:  
+    value: 100 
+  exploration_noise:  
+    value: "gaussian"
+  exploration_sigma:  
+    value: 0.1  
+  target_update_interval:  
+    value: 1 
+  policy_kwargs:  
+    values: 
+    - {"net_arch": {"pi": [512, 512, 512], "qf": [512, 512, 512]}}
+    - {"net_arch": {"pi": [128, 128], "qf": [128, 128]}}

@@ -11,7 +11,7 @@ from mjrl.utils.argsutils import Dict2Args
 from mjrl.utils.evalwrap import EnvEvalWrapper
     
 # Load training config file (yaml)
-config_file_path = os.path.join(PARAMS_PATH, "panda_posctrl_posreach", "train_sac.yaml")
+config_file_path = os.path.join(PARAMS_PATH, "panda_posctrl_posreach", "train_tqc.yaml")
 with open(config_file_path, "r") as stream: 
     config = yaml.safe_load(stream)   
  

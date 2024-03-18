@@ -88,18 +88,7 @@ rm /home/<username>/miniconda3/envs/mjrl/bin/../lib/libstdc++.so.6
 conda env update --name mjrl --file environment.yml --prune
 pip install -e .
 ``` 
-
-
-## Mujoco ##
-## XML
-quaternions are in the format [qw,qx,qy,qz]
-
-### Contact Forces bug
-Issue: https://github.com/openai/mujoco-py/pull/487
-Need to modify 'mujoco_py/mjviewer.py' in the conda env as follow:
-https://github.com/openai/mujoco-py/pull/487/commits/ab026c1ff8df54841a549cfd39374b312e8f00dd
-
-
+ 
 ## Usage ##
 
 ### Create an environment
@@ -119,16 +108,21 @@ python mjrl/run/some_run.py
 This can be either a single training or multiple trainings with same parametrs or a grid search. 
 
 The best model, tensorboard output and a .txt file with parameters and mean reward can be found in 'mjrlenvs/data/test' 
-
-## Usage ##
-
-* fix trainer.py and runs with it
-* fix panda
+ 
 
 
 ## Possible Errors Solved
 * Error: 'Import error. Trying to rebuild mujoco_py.' or 'GLIBCXX_3.4.30 not found'
 Solution: delete file '/home/riccardo/miniconda3/envs/rl0/lib/libstdc++.so.6'.  https://stackoverflow.com/questions/72205522/glibcxx-3-4-29-not-found
+
+### Notes on Mujoco ##
+#### XML ####
+quaternions are in the format [qw,qx,qy,qz]
+
+#### Contact Forces bug ####
+Issue: https://github.com/openai/mujoco-py/pull/487
+Need to modify 'mujoco_py/mjviewer.py' in the conda env as follow:
+https://github.com/openai/mujoco-py/pull/487/commits/ab026c1ff8df54841a549cfd39374b312e8f00dd
 
 ## TODOS
  

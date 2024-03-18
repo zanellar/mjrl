@@ -6,6 +6,8 @@ import wandb
 from wandb.integration.sb3 import WandbCallback
 
 from stable_baselines3 import SAC, DDPG, TD3, PPO
+from sb3_contrib import TQC
+
 from stable_baselines3.common.callbacks import CallbackList, EvalCallback,CheckpointCallback, StopTrainingOnNoModelImprovement
 from stable_baselines3.common.noise import OrnsteinUhlenbeckActionNoise, NormalActionNoise, ActionNoise
 from stable_baselines3.common.evaluation import evaluate_policy 
@@ -114,6 +116,26 @@ class Trainer():
                 #
                 verbose = 0 
             ) 
+        elif self.settings.algorithm.lower()=="tqc":
+            agent = TQC(
+                policy = 'MlpPolicy',
+                env = self.env,  
+                buffer_size = self.params.buffer_size,
+                batch_size = self.params.batch_size,
+                learning_rate = self.params.learning_rate,
+                gamma = self.params.gamma,
+                tau = self.params.tau,
+                action_noise = action_noise,
+                learning_starts = self.params.learning_starts,
+                train_freq = (int(self.params.train_freq.split("_")[0]), self.params.train_freq.split("_")[1]),
+                gradient_steps = self.params.gradient_steps,
+                seed = self.params.seed,
+                #
+                target_update_interval = self.params.target_update_interval,
+                policy_kwargs = self.params.policy_kwargs,
+                #
+                verbose = 0 
+            )
         elif self.settings.algorithm.lower()=="ddpg":
             agent = DDPG(
                 policy = 'MlpPolicy',
@@ -183,7 +205,7 @@ class Trainer():
                 #
                 verbose = 0 
             )
-        
+    
         
   
         new_logger = configure(LOGS_PATH, ["stdout", "csv", "tensorboard"])

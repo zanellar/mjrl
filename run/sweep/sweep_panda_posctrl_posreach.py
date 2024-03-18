@@ -10,7 +10,7 @@ from mjrl.utils.evalwrap import EnvEvalWrapper
 from mjrl.scripts.trainer import Trainer 
     
 # Load training config file (yaml)
-config_file_path = os.path.join(PARAMS_PATH, "panda_posctrl_posreach", "sweep_sac.yaml")
+config_file_path = os.path.join(PARAMS_PATH, "panda_posctrl_posreach", "sweep_tqc.yaml")
 with open(config_file_path, "r") as stream: 
     config = yaml.safe_load(stream)  
 
