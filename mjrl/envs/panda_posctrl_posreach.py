@@ -107,9 +107,11 @@ class Environment(EnvGymBase):
     qpos = sim_state[0:7]
     qvel = sim_state[7:14]
     if self.reward_id == self.NEGATIVE_REWARD:
-      reward = - self.dist - 0.01*np.linalg.norm(np.tanh(qvel)) 
+      reward = - self.dist  
+      # reward = - self.dist - 0.01*np.linalg.norm(np.tanh(qvel)) 
     elif self.reward_id == self.POSITIVE_REWARD:
-      reward = 1/(0.01 + self.dist + 0.01*np.linalg.norm(np.tanh(qvel)) )  
+      reward = 1/(0.01 + self.dist )  
+      # reward = 1/(0.01 + self.dist + 0.01*np.linalg.norm(np.tanh(qvel)) )  
     return reward
 
   def set_goal(self, goal):
