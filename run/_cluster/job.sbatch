@@ -1,6 +1,6 @@
 #!/bin/bash
 # parameters for slurm
-#SBATCH -J gpu-burn                   # job name, don't use spaces, keep it short 
+#SBATCH -J mjrl                   # job name, don't use spaces, keep it short 
 #SBATCH --mail-type=FAIL          # email status changes (NONE, BEGIN, END, FAIL, ALL)
 #SBATCH --mail-user=r.zanella@utwente.nl   # Where to send mail to
 #SBATCH --time=30-00:00                # time limit 1h

@@ -12,11 +12,11 @@ settings:
   expl_episode_horizon: 500
   eval_episode_horizon: 250
   eval_model_freq: 10000
-  num_eval_episodes: 5
+  num_eval_episodes: 10
   env_eval_rendering: true
   early_stopping: true
-  max_no_improvement_evals: 50
-  min_evals: 50
+  max_no_improvement_evals: 200
+  min_evals: 100
   callbacks: {}
 
 parameters:
@@ -27,7 +27,7 @@ parameters:
     - 43
     - 101 
   learning_rate: 
-    value: 0.003  
+    value: 0.005  
   learning_starts:  
     value: 500
   buffer_size:  
@@ -45,8 +45,8 @@ parameters:
     value: "500_step" 
   gradient_steps:  
     values: 
-    - 100 
     - 500 
+    - 100 
   exploration_noise:  
     value: "gaussian"
   exploration_sigma:  
@@ -55,6 +55,6 @@ parameters:
     value: 1 
   policy_kwargs:  
     values: 
+    - {"net_arch": {"pi": [256, 256], "qf": [256, 256, 256]}}
     - {"net_arch": {"pi": [512, 512, 512], "qf": [512, 512, 512]}}
     - {"net_arch": {"pi": [128, 128], "qf": [128, 128]}}
-    - {"net_arch": {"pi": [256, 256], "qf": [256, 256, 256]}}
