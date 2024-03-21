@@ -28,9 +28,10 @@ trainer = Trainer(
     enveval = EnvEvalWrapper(
         Environment(
             max_episode_length=config["settings"]["eval_episode_horizon"], 
-            render_mode="rgb_array"
+            render_mode="rgb_array",
         ),
-        vars = ["dist"] 
+        settings = config["settings"],
+        vars = ["dist"]
     ), 
     # enveval = Environment(
     #     max_episode_length=config["settings"]["eval_episode_horizon"], 

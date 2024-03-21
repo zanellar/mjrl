@@ -40,6 +40,7 @@ trainer = Trainer(
             max_episode_length=config["settings"]["eval_episode_horizon"], 
             render_mode="human"
         ),
+        settings = config["settings"],
         vars = ["dist"] 
     ),
     config = config 

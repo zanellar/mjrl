@@ -61,6 +61,10 @@ class EnvEvalWrapper(EnvGymBase):
         self.eval_values = {}
         for var in self.vars:
             self.eval_values[var] = []
+
+        self._avg_final_eval_values = {}
+        for var in self.vars:
+            self._avg_final_eval_values[var] = []
  
         return self._env.reset(seed=seed)
     
@@ -81,14 +85,21 @@ class EnvEvalWrapper(EnvGymBase):
             # TODO
 
             for i, var in enumerate(self.vars):  
-                print(f"eval/{var}: {getattr(self._env, var)}")
-                wandb.log({f"eval/{var}": getattr(self._env, var)})
+                value = getattr(self._env, var)
+                print(f"eval/{var}: {value}")
+                self._avg_final_eval_values[var].append(value)
 
                 if not self.only_final[i]:  
                     data_plot = [[_x, _y] for (_x, _y) in zip(range(len(self.eval_values[var])), self.eval_values[var])]
                     table = wandb.Table(data=data_plot, columns=["steps", f"{var}_{self.index}"])
                     line_plot = wandb.plot.line(table, x="steps", y=f"{var}_{self.index}", title=f"{var}_{self.index}") 
                     wandb.log({f"evalall/{var}_{self.index}": line_plot})
+
+            if self.index % self.settings["num_eval_episodes"] == 0:
+                for var in self.vars:
+                    avg_final_value = np.mean(self._avg_final_eval_values[var])
+                    wandb.log({f"eval/avg_final_{var}": avg_final_value})
+                    print(f"\n ----- eval/avg_final_{var}: {avg_final_value} ----- ")
 
 
         return obs, reward, terminated, truncated, info

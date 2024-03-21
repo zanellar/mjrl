@@ -2,9 +2,9 @@ settings:
   env_id: panda_posctrl_posreach
   algorithm: tqc
   training_horizon: 500000
-  expl_episode_horizon: 100
-  eval_episode_horizon: 50
-  eval_model_freq: 100
+  expl_episode_horizon: 1000
+  eval_episode_horizon: 300
+  eval_model_freq: 5000
   num_eval_episodes: 10
   env_eval_rendering: false
   early_stopping: false
