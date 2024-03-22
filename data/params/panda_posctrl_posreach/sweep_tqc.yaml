@@ -18,6 +18,7 @@ settings:
   max_no_improvement_evals: 200
   min_evals: 100
   callbacks: {}
+  print_log_interval: 10000
 
 parameters:
   seed:  
@@ -27,7 +28,7 @@ parameters:
     - 43
     - 101 
   learning_rate: 
-    value: 0.005  
+    value: 0.001  
   learning_starts:  
     value: 500
   buffer_size:  
@@ -35,24 +36,28 @@ parameters:
   batch_size:  
     value: 2048
   gamma:  
-    value: 0.95
+    values: 
+    - 0.99
+    - 0.95
   tau:  
     values: 
-    - 0.05
     - 0.005
+    - 0.05
     - 0.8
   train_freq:  
     value: "500_step" 
   gradient_steps:  
     values: 
     - 500 
-    - 100 
+    - 200 
   exploration_noise:  
     value: "gaussian"
   exploration_sigma:  
     value: 0.1  
   target_update_interval:  
-    value: 1 
+    values: 
+    - 10 
+    - 1
   policy_kwargs:  
     values: 
     - {"net_arch": {"pi": [256, 256], "qf": [256, 256, 256]}}

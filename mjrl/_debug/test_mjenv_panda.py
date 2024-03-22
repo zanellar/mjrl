@@ -1,8 +1,8 @@
 from traceback import print_tb
 
 import sys
-sys.path.append('/home/kvn/Super Duper Code/panda_mujoco/')
-from mjrl.scripts.env.mjenv import MjEnv
+# # sys.path.append('/home/kvn/Super Duper Code/panda_mujoco/')
+from mjrl.scripts.mjenv import MjEnv
 import numpy as np
 
 

@@ -272,8 +272,8 @@ class Trainer():
         self.env.reset()    
         agent.learn(
             total_timesteps = self.settings.training_horizon, 
-            log_interval = 1,  
-            progress_bar = True, 
+            log_interval = 1 if self.settings.print_log_interval is None else self.settings.print_log_interval,  
+            progress_bar = False, 
             callback = callbacks
         )     
 
