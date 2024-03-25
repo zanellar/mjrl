@@ -13,12 +13,11 @@ settings:
   eval_episode_horizon: 250
   eval_model_freq: 10000
   num_eval_episodes: 10
-  env_eval_rendering: true
+  env_eval_rendering: false
   early_stopping: true
   max_no_improvement_evals: 200
   min_evals: 100
-  callbacks: {}
-  print_log_interval: 10000
+  callbacks: {} 
 
 parameters:
   seed:  

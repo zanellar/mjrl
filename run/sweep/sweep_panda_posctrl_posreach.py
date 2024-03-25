@@ -8,27 +8,37 @@ from mjrl.envs.panda_posctrl_posreach import Environment
 from mjrl.utils.paths import LOGS_PATH, PARAMS_PATH, WEIGHTS_PATH
 from mjrl.utils.evalwrap import EnvEvalWrapper
 from mjrl.scripts.trainer import Trainer 
-    
+
+# Set Wandb Service timeout to 10 minutes
+os.environ["WANDB__SERVICE_WAIT"] = "600"
+
+        
 # Load training config file (yaml)
 config_file_path = os.path.join(PARAMS_PATH, "panda_posctrl_posreach", "sweep_tqc.yaml")
 with open(config_file_path, "r") as stream: 
-    config = yaml.safe_load(stream)  
+        config = yaml.safe_load(stream)  
 
 # Initialize sweep by passing in config
 sweep_id = wandb.sweep(
-  sweep = config, 
-  project = 'mjrl' 
+    sweep = config, 
+    project = 'mjrl' 
 )      
 
+# Set reward id
+reward_id = Environment.POSITIVE_REWARD
+
+# Initialize trainer
 trainer = Trainer(
     env = Environment(
         max_episode_length=config["settings"]["expl_episode_horizon"], 
-        render_mode="rgb_array"
+        render_mode="rgb_array",
+        reward_id=reward_id
     ),  
     enveval = EnvEvalWrapper(
         Environment(
             max_episode_length=config["settings"]["eval_episode_horizon"], 
             render_mode="rgb_array",
+            reward_id=reward_id
         ),
         settings = config["settings"],
         vars = ["dist"]

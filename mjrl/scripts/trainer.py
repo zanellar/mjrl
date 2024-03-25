@@ -273,7 +273,7 @@ class Trainer():
         agent.learn(
             total_timesteps = self.settings.training_horizon, 
             log_interval = 1 if self.settings.print_log_interval is None else self.settings.print_log_interval,  
-            progress_bar = False, 
+            progress_bar = True, 
             callback = callbacks
         )     
 

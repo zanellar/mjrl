@@ -80,13 +80,13 @@ class Environment(EnvGymBase):
     Check if the robot goes out of the workspace.
     ''' 
     if self.WORKSPACE_BARRIERS is not None:  
+      self.eef_pos = self.sim.get_obj_pos("end_effector")  
       for i in range(len(self.eef_pos)):
         minv = self.WORKSPACE_BARRIERS[i][0]
         maxv = self.WORKSPACE_BARRIERS[i][1]
         if self.eef_pos[i]<minv or self.eef_pos[i]>maxv:
           if self.log > 0:
             print(f"EFF out of the workspace along axis {i}:  {self.eef_pos[i]} not in range [{minv},{maxv}]") 
-          # exit("@@@@@@")
           return True
         
     # reaches the target
@@ -130,7 +130,10 @@ class Environment(EnvGymBase):
       self.set_goal(new_goal)
 
     # reset simulation
-    self.sim.reset(hard_reset=True)   
+    while True:
+      self.sim.reset(hard_reset=True) 
+      if self._check_episode_truncate() is False:
+        break    
 
     # reset RL variables
     self.obs = self.get_obs() 

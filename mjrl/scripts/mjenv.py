@@ -219,13 +219,14 @@ class MjEnv(object):
         else:
             return False
   
-    def set_joints_pos(self, joints): # BUG controllare dove usato... 
+    def set_joints_pos(self, joints): 
         joint_ranges = self._sim.model.jnt_range
         joint_names = self._sim.model.joint_names 
         for i, name in enumerate(joint_names):   
             joint_index = self._sim.model.get_joint_qpos_addr(name)
             r = joint_ranges[joint_names.index(name)]
             if joints == 'random':  
+                # TODO set joints range 
                 jval = random.uniform(r[0], r[1])
             else: 
                 dis = np.random.randn()*self._init_joint_config_std_noise 
