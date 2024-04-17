@@ -60,9 +60,7 @@ parameters:
     values: 
     - "auto_0.1"
     - "auto"
-  policy_kwargs:  
+  net_arch_actor_critic:  
     values: 
-    - {"net_arch": {"pi": [256,256], "qf": [256,256]}}
-    - {"net_arch": {"pi": [30,30,30], "qf": [30,30,30]}}
-    - {"net_arch": {"pi": [16,32,16,8], "qf": [16,32,16,8]}}
-    - {"net_arch": {"pi": [16,16,16,16], "qf": [16,16,16,16]}}
+    - [[400, 300], [400, 300]]
+    - [[50,50,50],[50,50,50]] 

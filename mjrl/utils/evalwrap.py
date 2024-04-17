@@ -8,11 +8,13 @@ from mjrl.utils.argsutils import Dict2Args
  
 class EnvEvalWrapper(EnvGymBase):
 
-    def __init__(self, env, vars=[], only_final=[], settings={}):
+    def __init__(self, env, vars=[], only_final=[], settings={}, dim_hist_mean_final_values=10):
         '''
         env: the original environment 
         vars: list of vars to log (name of the variable in the env). The variable must be a scalar. 
         only_final: list of boolean whether to log only the final value of the var or not corresponding to the vars list
+        settings: dictionary of settings
+        dim_hist_mean_final_values: the dimension of the history of the mean final values
         '''
         super(EnvEvalWrapper, self).__init__()
         
@@ -21,6 +23,12 @@ class EnvEvalWrapper(EnvGymBase):
         self._env = env 
         self.vars = vars
         self.only_final = only_final
+
+        # initialize the the moving average of the mean final value
+        self._hist_mean_final_values = {}
+        self.dim_hist_mean_final_values = dim_hist_mean_final_values
+        for var in self.vars:
+            self._hist_mean_final_values[var] = [None]*dim_hist_mean_final_values
 
         # Initialize the eval values
         self.index = 0
@@ -62,9 +70,9 @@ class EnvEvalWrapper(EnvGymBase):
         for var in self.vars:
             self.eval_values[var] = []
 
-        self._avg_final_eval_values = {}
+        self._final_eval_values = {} 
         for var in self.vars:
-            self._avg_final_eval_values[var] = []
+            self._final_eval_values[var] = []
  
         return self._env.reset(seed=seed)
     
@@ -87,7 +95,7 @@ class EnvEvalWrapper(EnvGymBase):
             for i, var in enumerate(self.vars):  
                 value = getattr(self._env, var)
                 print(f"eval/{var}: {value}")
-                self._avg_final_eval_values[var].append(value)
+                self._final_eval_values[var].append(value)
 
                 if not self.only_final[i]:  
                     data_plot = [[_x, _y] for (_x, _y) in zip(range(len(self.eval_values[var])), self.eval_values[var])]
@@ -97,9 +105,21 @@ class EnvEvalWrapper(EnvGymBase):
 
             if self.index % self.settings["num_eval_episodes"] == 0:
                 for var in self.vars:
-                    avg_final_value = np.mean(self._avg_final_eval_values[var])
+                    avg_final_value = np.mean(self._final_eval_values[var]) 
+                    min_final_value = np.min(self._final_eval_values[var])
+                    max_final_value = np.max(self._final_eval_values[var])
                     wandb.log({f"eval/avg_final_{var}": avg_final_value})
+                    wandb.log({f"eval/min_final_{var}": min_final_value})
+                    wandb.log({f"eval/max_final_{var}": max_final_value})
                     print(f"\n ----- eval/avg_final_{var}: {avg_final_value} ----- ")
+                    print(f"\n ----- eval/min_final_{var}: {min_final_value} ----- ")
+                    print(f"\n ----- eval/max_final_{var}: {max_final_value} ----- ")
+
+                    self._hist_mean_final_values[var].pop(0)
+                    self._hist_mean_final_values[var].append(avg_final_value)
+                    if None not in self._hist_mean_final_values[var]: 
+                        mean_hist_avg_final_value = np.mean(self._hist_mean_final_values[var])
+                        wandb.log({f"eval/mean{self.dim_hist_mean_final_values}_avg_final_{var}": mean_hist_avg_final_value}) 
 
 
         return obs, reward, terminated, truncated, info

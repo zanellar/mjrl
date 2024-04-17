@@ -9,7 +9,7 @@ env = Environment(
 
 obs = env.reset()
 for i in range(1000):
-    action = [0, 0, 0, 0.05, 0, 0, 0]
+    action = [0, 0.05, 0.05, 0.05, 0.05, 0, 0]
     obs, reward, terminated, truncated, info = env.step(action)
     env.render() 
     print("@@@@@@@@@@@@@@@@@@:")
@@ -18,6 +18,7 @@ for i in range(1000):
     print("reward:", reward)
     print("terminated:", terminated)
     print("truncated:", truncated)
+    # input("Press Enter to continue...")
 
     if terminated: 
       obs = env.reset()   

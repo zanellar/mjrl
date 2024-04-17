@@ -29,4 +29,4 @@ parameters:
   sde_sample_freq: -1
   target_update_interval: 1
   ent_coef: "auto"
-  policy_kwargs:  {"net_arch": {"pi": [400, 300], "qf": [400, 300]}}
+  net_arch_actor_critic:   [[400, 300], [400, 300]] 

@@ -52,7 +52,7 @@ parameters:
     value:  5
   ent_coef:  
     value: "auto"
-  policy_kwargs:  
+  net_arch_actor_critic:  
     values: 
-    - {"net_arch": {"pi": [256,256], "qf": [256,256]}}
-    - {"net_arch": {"pi": [16,16,16,16], "qf": [16,16,16,16]}}
+    - [[256, 256], [256, 256, 256]]
+    - [[512, 512, 512], [512, 512, 512]]

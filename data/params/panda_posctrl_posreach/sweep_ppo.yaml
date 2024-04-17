@@ -64,7 +64,7 @@ parameters:
     value: 0.5
   stats_window_size:
     value: 100
-  policy_kwargs:  
+  net_arch_actor_critic:  
     values: 
-    - {"net_arch": {"pi": [400, 300], "qf": [400, 300]}}
-    - {"net_arch": {"pi": [50,50,50], "qf": [50,50,50]}}
+    - [[400, 300], [400, 300]]
+    - [[50,50,50],[50,50,50]] 

@@ -169,13 +169,14 @@ class Environment(EnvGymBase):
   def get_obs(self):  
     sim_state = self.sim.get_state()
     qpos = sim_state[0:7]
-    qvel = sim_state[7:14]
+    qvel = sim_state[7:14] 
     eef = np.array(sim_state[14:17])
     target = np.array(sim_state[17:20])
   
     obs = np.concatenate([
       np.sin(qpos),
       np.cos(qpos), 
+      np.tanh(qvel), 
       np.tanh(eef),
       np.tanh(target)
     ]).astype(np.float32)  

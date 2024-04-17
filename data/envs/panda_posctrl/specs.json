@@ -29,6 +29,6 @@
     },
     "environment": {
         "fixed_frame": "panda_link0", 
-        "control_frequency": 125
+        "control_frequency": 30
     }
 }

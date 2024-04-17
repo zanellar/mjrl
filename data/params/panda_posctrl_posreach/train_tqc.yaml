@@ -25,4 +25,4 @@ parameters:
   exploration_noise: "none"
   exploration_sigma: 0.1  
   target_update_interval: 1 
-  policy_kwargs:  {"net_arch": {"pi": [512, 512, 512], "qf": [512, 512, 512]}}
+  net_arch_actor_critic:   [[400, 300], [400, 300]] 

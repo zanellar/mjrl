@@ -131,7 +131,7 @@ https://github.com/openai/mujoco-py/pull/487/commits/ab026c1ff8df54841a549cfd393
 * creare dei file di debug per environments generici
 * vectorized environment
 * wandb sync gym videos
-* use TQC
+* add earlystop on the average of last N rollout/ep_rew_mean
 * https://github.com/Bargez908/cercagrigliona/blob/main/cercagrigliona/envs/panda_torques_reach_site_random.py
 * https://github.com/Bargez908/cercagrigliona/blob/main/params/runs/panda_torques_tqc.yaml 
 * https://github.com/Bargez908/cercagrigliona/blob/main/cercagrigliona/utils/train.py

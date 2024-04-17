@@ -54,7 +54,7 @@ parameters:
     - 0.2   
     - 0.1
     - 0.4
-  policy_kwargs:  
+  net_arch_actor_critic:  
     values: 
-    - {"net_arch": {"pi": [400, 300], "qf": [400, 300]}}
-    - {"net_arch": {"pi": [50,50,50], "qf": [50,50,50]}}
+    - [[400, 300], [400, 300]]
+    - [[50,50,50],[50,50,50]] 

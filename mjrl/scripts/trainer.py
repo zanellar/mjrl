@@ -112,7 +112,7 @@ class Trainer():
                 sde_sample_freq = self.params.sde_sample_freq,
                 target_update_interval = self.params.target_update_interval,
                 ent_coef = self.params.ent_coef,
-                policy_kwargs = self.params.policy_kwargs,
+                policy_kwargs = {"net_arch": {"pi": self.params.net_arch_actor_critic[0], "qf": self.params.net_arch_actor_critic[1]}} ,
                 #
                 verbose = 0 
             ) 
@@ -132,7 +132,7 @@ class Trainer():
                 seed = self.params.seed,
                 #
                 target_update_interval = self.params.target_update_interval,
-                policy_kwargs = self.params.policy_kwargs,
+                policy_kwargs = {"net_arch": {"pi": self.params.net_arch_actor_critic[0], "qf": self.params.net_arch_actor_critic[1]}} ,
                 #
                 verbose = 0 
             )
@@ -150,7 +150,7 @@ class Trainer():
                 gradient_steps = self.params.gradient_steps,
                 seed = self.params.seed,
                 #
-                policy_kwargs = self.params.policy_kwargs,
+                policy_kwargs= {"net_arch": {"pi": self.params.net_arch_actor_critic[0], "qf": self.params.net_arch_actor_critic[1]}} ,
                 #
                 verbose = 0 
             )
@@ -169,7 +169,7 @@ class Trainer():
                 gradient_steps = self.params.gradient_steps,
                 seed = self.params.seed,
                 #
-                policy_kwargs = self.params.policy_kwargs,
+                policy_kwargs = {"net_arch": {"pi": self.params.net_arch_actor_critic[0], "qf": self.params.net_arch_actor_critic[1]}} ,
                 policy_delay = self.params.policy_delay,
                 target_policy_noise = self.params.target_policy_noise, 
                 target_noise_clip = self.params.target_noise_clip,
@@ -201,13 +201,12 @@ class Trainer():
                 use_sde = self.params.use_sde,
                 sde_sample_freq = self.params.sde_sample_freq,
                 stats_window_size = self.params.stats_window_size,
-                policy_kwargs = self.params.policy_kwargs,
+                policy_kwargs = {"net_arch": {"pi": self.params.net_arch_actor_critic[0], "qf": self.params.net_arch_actor_critic[1]}},
                 #
                 verbose = 0 
             )
     
-        
-  
+         
         new_logger = configure(LOGS_PATH, ["stdout", "csv", "tensorboard"])
         agent.set_logger(new_logger)
 
