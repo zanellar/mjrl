@@ -20,6 +20,10 @@ sweep_id = wandb.sweep(
   project = 'mjrl' 
 )      
 
+# Save sweep_id in a file
+with open("_tmp_sweep_id.txt", 'w') as file:
+    file.write(sweep_id)
+
 trainer = Trainer(
     env = Environment(
         max_episode_length=config["settings"]["expl_episode_horizon"], 
