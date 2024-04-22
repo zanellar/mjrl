@@ -60,3 +60,5 @@ wandb
 
 # setup
 mjrl.egg-info
+
+_tmp_sweep_id.txt
