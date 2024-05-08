@@ -10,4 +10,5 @@ WEIGHTS_PATH = os.path.join(_PACKAGE_PATH, os.pardir, "data", "weights")
 PLOTS_PATH = os.path.join(_PACKAGE_PATH, os.pardir, "data", "plots")  
 PARAMS_PATH = os.path.join(_PACKAGE_PATH, os.pardir, "data", "params")  
 LOGS_PATH = os.path.join(_PACKAGE_PATH, os.pardir, "data", "logs")
+RESULTS_PATH = os.path.join(_PACKAGE_PATH, os.pardir, "data", "results")
 

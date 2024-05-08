@@ -140,27 +140,30 @@ class Environment(EnvGymBase):
     self.action = None
     self.terminated = False
     self.truncated = False
-    info = {}
+    self.info = {"dist": self.dist}
 
     # reset metrics
     self.eef_pos = self.sim.get_obj_pos("end_effector")
     self.dist = np.linalg.norm(self.eef_pos - self.goal, axis = -1)
 
-    return (self.obs, info)
+    return (self.obs, self.info)
  
   def step(self, action):  
-    info = {}   
+    self.info = {"dist": self.dist}
     self.action = action  
     _, self.terminated = self.sim.execute(self.action)    
-    self.reward = self.get_reward(info) 
+    self.reward = self.get_reward(self.info) 
     self.obs = self.get_obs() 
     self.truncated = self._check_episode_truncate() if not self.terminated else False 
     
     if self.debug:
       print(f"action={self.action}, reward={self.reward}, terminated={self.terminated}, truncated={self.truncated}")
+      if self.truncated:
+        print(f"Episode truncated: {self.terminated}")
+        input("Press Enter to continue...")
       self.render() 
 
-    return self.obs, self.reward, self.terminated, self.truncated, info
+    return self.obs, self.reward, self.terminated, self.truncated, self.info
 
   def render(self, mode=None): 
     self.sim.render()

@@ -1,0 +1,11 @@
+ 
+env_id: panda_posctrl_posreach
+algorithm: tqc
+n_episodes: 100
+episode_horizon: 100  
+seed: 0 
+model_id: "eager-sweep-1"
+render: true
+save: false
+motor_torque_coefficient: 0
+success_threshold: 0.05
