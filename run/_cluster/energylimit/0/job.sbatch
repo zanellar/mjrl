@@ -9,4 +9,4 @@
 module load anaconda3/2022.05
 source activate
 conda activate mjrl
-python ../sweep/sweep_panda_posctrl_posreach_energylimit.py
+python ../../../sweep/sweep_panda_posctrl_posreach_energylimit.py
