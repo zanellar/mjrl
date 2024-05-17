@@ -103,7 +103,7 @@ class EnvEvalWrapper(EnvGymBase):
                     line_plot = wandb.plot.line(table, x="steps", y=f"{var}_{self.index}", title=f"{var}_{self.index}") 
                     wandb.log({f"evalall/{var}_{self.index}": line_plot})
 
-            if self.index % self.settings["num_eval_episodes"] == 0:
+            if self.index % self.settings.num_eval_episodes == 0:
                 for var in self.vars:
                     avg_final_value = np.mean(self._final_eval_values[var]) 
                     min_final_value = np.min(self._final_eval_values[var])

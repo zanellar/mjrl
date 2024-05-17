@@ -59,7 +59,7 @@ trainer = Trainer(
     env = Environment(
         max_episode_length=config["settings"]["expl_episode_horizon"], 
         render_mode="human",
-        debug = True,
+        debug = False,
         settings = env_settings,
         reward_id = reward_id
     ),  
@@ -74,7 +74,8 @@ trainer = Trainer(
         settings = config["settings"],
         vars = ["dist"] 
     ),
-    config = config 
+    config = config , 
+    sweep = True
 ) 
 
 # Start sweep job 

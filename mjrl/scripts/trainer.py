@@ -47,16 +47,16 @@ class Trainer():
                 # reinit = True
                 )
             self.params = wandb.config  
-
+ 
         if self.settings.env_eval_rendering: # BUG env_eval_rendering
             self.env = Monitor(self.env)    
             # def make_env(): 
             #     return Monitor(self.env)    
             # self.env = DummyVecEnv([make_env])  
             # self.env = VecVideoRecorder(self.env, "videos", record_video_trigger=lambda x: x % 100000 == 0, video_length=2000)  # record videos
- 
+  
         torch.manual_seed(self.params.seed)  
-        np.random.seed(self.params.seed)
+        np.random.seed(self.params.seed) 
 
         ###################### PATHS ########################
         run_name = wandb.run.name
