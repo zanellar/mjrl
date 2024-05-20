@@ -9,7 +9,7 @@ from stable_baselines3 import SAC, DDPG, TD3, PPO
 from sb3_contrib import TQC
  
 from mjrl.envs.panda_posctrl_posreach_energyeval import Environment
-from mjrl.utils.paths import LOGS_PATH, PARAMS_PATH, WEIGHTS_PATH, RESULTS_PATH
+from mjrl.utils.paths import LOGS_PATH, PARAMS_PATH, WEIGHTS_PATH, RESULTS_PATH, PLOTS_PATH
 from mjrl.scripts.trainer import Trainer
 from mjrl.utils.argsutils import Dict2Args 
 from mjrl.utils.evalwrap import EnvEvalWrapper
@@ -84,12 +84,21 @@ if config["save"]:
     file_path =  os.path.join(RESULTS_PATH, f"{model_id}.txt") 
     with open(file_path, 'w') as file:  
         file.write(returns_list)  
+
+
+############################################################################################################
+############################################################################################################
+############################################################################################################
   
 # print max energy consumption   
 print("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 print(f"Max Energy Consumption per step: {max(step_energy_consumption)}")
 print(f"Min Energy Consumption per step: {min(step_energy_consumption)}")
 print(f"Average Energy Consumption per step: {np.mean(step_energy_consumption)}")
+
+# save plots path
+plots_path = os.path.join(PLOTS_PATH, 'test', model_id)
+os.makedirs(plots_path, exist_ok=True)
 
 # plot step energy consumption as bar chart
 fig = plt.figure()
@@ -107,6 +116,7 @@ for i in range(config["n_episodes"]):
 plt.xlabel('Step')
 plt.ylabel('Energy Consumption')
 plt.title('Energy Consumption per Step')
+plt.savefig(os.path.join(plots_path, 'energy_consumption_per_step.png'))
  
 # same plot at above but every episode is overlaid with different color in the interval config["episode_horizon"]
 fig = plt.figure()
@@ -116,6 +126,7 @@ for i in range(config["n_episodes"]):
 plt.xlabel('Step')
 plt.ylabel('Energy Consumption')
 plt.title('Energy Consumption per Step')
+plt.savefig(os.path.join(plots_path, 'energy_consumption_per_step_episodes.png'))
 
 # plot histogram of energy consumption
 fig = plt.figure()
@@ -124,6 +135,7 @@ plt.hist(step_energy_consumption_nozeros, bins=200)
 plt.xlabel('Energy Consumption')
 plt.ylabel('Frequency [#steps]')
 plt.title('Energy Consumption Histogram per Step')
+plt.savefig(os.path.join(plots_path, 'energy_consumption_histogram.png'))
 
 # plot energy consumption per episode as histogram
 fig = plt.figure()
@@ -131,6 +143,7 @@ plt.hist(energy_consumption_list, bins=200)
 plt.xlabel('Energy Consumption')
 plt.ylabel('Frequency [#episodes]')
 plt.title('Energy Consumption per Episode Histogram')
+plt.savefig(os.path.join(plots_path, 'energy_consumption_per_episode_histogram.png'))
 
 plt.show()
 

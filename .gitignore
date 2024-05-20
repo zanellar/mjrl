@@ -54,6 +54,7 @@ Thumbs.db
 # data 
 data/logs/* 
 data/weights/* 
+data/plots/*
 wandb
 *.pt
 *.pth

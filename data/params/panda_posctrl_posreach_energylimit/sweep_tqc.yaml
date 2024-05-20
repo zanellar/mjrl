@@ -10,7 +10,7 @@ settings:
   algorithm: TQC
   training_horizon: 50000000
   expl_episode_horizon: 500
-  eval_episode_horizon: 200
+  eval_episode_horizon: 100
   eval_model_freq: 10000
   num_eval_episodes: 10
   env_eval_rendering: false

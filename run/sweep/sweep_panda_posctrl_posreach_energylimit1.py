@@ -4,7 +4,7 @@ import wandb
 import numpy as np
 import torch
  
-from mjrl.envs.panda_posctrl_posreach_energylimit0 import Environment
+from mjrl.envs.panda_posctrl_posreach_energylimit1 import Environment
 from mjrl.utils.paths import LOGS_PATH, PARAMS_PATH, WEIGHTS_PATH
 from mjrl.utils.evalwrap import EnvEvalWrapper
 from mjrl.scripts.trainer import Trainer 
@@ -45,12 +45,12 @@ else:
 
 # Environment settings
 env_settings = dict(
-    energy_margin = 5,  
+    energy_margin = 10,  
     motor_torque_coefficient = 0,
     k_task = 1,
     k_energy = 1,
     tank_min_threshold = 5,  
-    energy_tank_init = 600 
+    energy_tank_init = 1000 
 )
 # Set reward id
 reward_id = Environment.POSITIVE_REWARD

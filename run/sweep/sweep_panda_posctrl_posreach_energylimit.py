@@ -45,7 +45,7 @@ else:
 
 # Environment settings
 env_settings = dict(
-    energy_margin = 5, 
+    energy_margin = 10, 
     motor_torque_coefficient = 0,
     k_task = 1,
     k_energy = 1 
