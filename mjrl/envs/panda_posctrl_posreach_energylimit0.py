@@ -23,6 +23,7 @@ class Environment(PandaPosCtrlPosReachEnv):
     self.motor_torque_coefficient = settings["motor_torque_coefficient"]
     self.k_task = settings["k_task"]
     self.k_energy = settings["k_energy"] 
+    self.log_energy = settings["log_energy"]
     self.energy_out = 0
   
     super(Environment, self).__init__(
@@ -52,11 +53,15 @@ class Environment(PandaPosCtrlPosReachEnv):
     if self.reward_id == self.NEGATIVE_REWARD:
  
       reward = - self.k_task*self.dist - self.k_energy*self.energy_out   
-
+  
     # Positive Reward
     elif self.reward_id == self.POSITIVE_REWARD: 
 
       reward = 1/(0.01 + self.k_task*self.dist + self.k_energy*self.energy_out)   
+
+    # Additional energy penalty
+    if self.energy_out > self.energy_margin: 
+      reward = -10*abs(reward)
 
     return reward
  
@@ -110,6 +115,11 @@ class Environment(PandaPosCtrlPosReachEnv):
       self.reward = self.get_reward(self.info)
       self.terminated = False
       self.truncated = True 
+       
+    wandb.log({f"eval/energy_exiting_normalized": self.energy_out - self.energy_margin})
+
+    if self.truncated or self.terminated:
+      wandb.log({f"eval/final_energy_exiting_normalized": self.energy_out - self.energy_margin})
 
     # Additional info on energy consumption 
     self.info["energy_exiting"] = self.energy_out  

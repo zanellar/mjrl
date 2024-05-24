@@ -26,6 +26,7 @@ class Environment(PandaPosCtrlPosReachEnv):
     self.energy_out = 0
     self.history_length = settings["history_length"] 
     self.history_energy_out = np.zeros(self.history_length)
+    self.log_energy = settings["log_energy"]
   
     super(Environment, self).__init__(
       init_joint_config = init_joint_config, 
@@ -123,6 +124,11 @@ class Environment(PandaPosCtrlPosReachEnv):
       self.reward = self.get_reward(self.info)
       self.terminated = False
       self.truncated = True 
+
+    wandb.log({f"eval/energy_exiting_normalized": self.energy_out - self.energy_margin})
+
+    if self.truncated or self.terminated:
+      wandb.log({f"eval/final_energy_exiting_normalized": self.energy_out - self.energy_margin}) 
 
     # Additional info on energy consumption 
     self.info["energy_exiting"] = self.energy_out  

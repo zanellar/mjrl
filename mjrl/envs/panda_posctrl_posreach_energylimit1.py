@@ -27,6 +27,7 @@ class Environment(PandaPosCtrlPosReachEnv):
     self.energy_out = 0
     self.energy_tank = self.energy_tank_init
     self.tank_min_threshold = settings["tank_min_threshold"]
+    self.log_energy = settings["log_energy"]
   
     super(Environment, self).__init__(
       init_joint_config = init_joint_config, 
@@ -122,6 +123,12 @@ class Environment(PandaPosCtrlPosReachEnv):
       self.reward = self.get_reward(self.info)
       self.terminated = False
       self.truncated = True 
+
+    wandb.log({f"eval/energy_exiting_normalized": self.energy_out - self.energy_margin})
+
+    if self.truncated or self.terminated:
+      wandb.log({f"eval/final_energy_exiting_normalized": self.energy_out - self.energy_margin})
+      wandb.log({f"eval/final_energy_tank_normalized": self.energy_tank - self.tank_min_threshold}) 
 
     # Additional info on energy consumption 
     self.info["energy_exiting"] = self.energy_out  

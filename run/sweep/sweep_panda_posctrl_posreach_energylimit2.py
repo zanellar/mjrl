@@ -43,14 +43,20 @@ else:
     with open("_tmp_sweep_id.txt", 'r') as file:
         sweep_id = str(file.read())
 
-# Environment settings
+# Exploration environment settings
 env_settings = dict(
     energy_margin = 10,  
     motor_torque_coefficient = 0,
     k_task = 1,
     k_energy = 1,
-    history_length = 7
+    history_length = 10,
+    log_energy = False
 )
+
+# Evaluation environment settings
+eval_env_settings = env_settings.copy()
+eval_env_settings["log_energy"] = True
+
 # Set reward id
 reward_id = Environment.POSITIVE_REWARD
   
@@ -67,7 +73,7 @@ trainer = Trainer(
             max_episode_length=config["settings"]["eval_episode_horizon"], 
             render_mode="human",
             debug = False,
-            settings = env_settings,
+            settings = eval_env_settings,
             reward_id = reward_id
         ),
         settings = config["settings"],
