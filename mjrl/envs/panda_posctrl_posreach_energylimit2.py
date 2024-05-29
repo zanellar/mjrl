@@ -50,20 +50,20 @@ class Environment(PandaPosCtrlPosReachEnv):
     # Energy metrics
     qpos_new = np.array(self.sim.get_state()[0:7])
     qtor_new = np.array(self.sim.get_joints_ft()[0:7])   
-    self.energy_out = self._get_energy_out(qpos_new, qtor_new)
+    energy_out = self._get_energy_out(qpos_new, qtor_new)
 
     # Negative Reward
     if self.reward_id == self.NEGATIVE_REWARD:
  
-      reward = - self.k_task*self.dist - self.k_energy*self.energy_out   
+      reward = - self.k_task*self.dist - self.k_energy*energy_out   
 
     # Positive Reward
     elif self.reward_id == self.POSITIVE_REWARD: 
 
-      reward = 1/(0.01 + self.k_task*self.dist + self.k_energy*self.energy_out)   
+      reward = 1/(0.01 + self.k_task*self.dist + self.k_energy*energy_out)   
 
     # Additional energy penalty
-    if self.energy_out > self.energy_margin: 
+    if energy_out > self.energy_margin: 
       reward = -10*abs(reward)
 
     return reward
