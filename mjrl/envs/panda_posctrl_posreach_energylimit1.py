@@ -83,7 +83,7 @@ class Environment(PandaPosCtrlPosReachEnv):
     self.qpos = np.array(self.sim.get_state()[0:7])
     self.qtor = np.array(self.sim.get_joints_ft()[0:7]) 
 
-    self.energy_tank = self.energy_margin
+    self.energy_tank = self.energy_tank_init
 
     return (self.obs, self.info)
   
