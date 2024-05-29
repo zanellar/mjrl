@@ -118,8 +118,8 @@ class Environment(PandaPosCtrlPosReachEnv):
       self.truncated = True 
       self.energy_excess_ct += 1
        
-    if self.eval_env:
-      wandb.log({f"eval/energy_budget": self.energy_margin - self.energy_out})
+    # if self.eval_env:
+    #   wandb.log({f"eval/energy_budget": self.energy_margin - self.energy_out})
 
     if self.truncated or self.terminated:
       if self.eval_env:

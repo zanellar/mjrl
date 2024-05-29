@@ -78,7 +78,8 @@ trainer = Trainer(
             reward_id = reward_id
         ),
         settings = config["settings"],
-        vars = ["dist"] 
+        vars = ["dist"],
+        logs=["avg"]
     ),
     config = config , 
     sweep = True
