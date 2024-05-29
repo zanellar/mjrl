@@ -8,7 +8,7 @@ from mjrl.utils.argsutils import Dict2Args
  
 class EnvEvalWrapper(EnvGymBase):
 
-    def __init__(self, env, vars=[], only_final=[], settings={}, dim_hist_mean_final_values=10):
+    def __init__(self, env, vars=[], only_final=[], settings={}, dim_hist_mean_final_values=10, logs=["min", "max", "avg"]):
         '''
         env: the original environment 
         vars: list of vars to log (name of the variable in the env). The variable must be a scalar. 
@@ -23,6 +23,7 @@ class EnvEvalWrapper(EnvGymBase):
         self._env = env 
         self.vars = vars
         self.only_final = only_final
+        self.logs = logs
 
         # initialize the the moving average of the mean final value
         self._hist_mean_final_values = {}
@@ -108,12 +109,15 @@ class EnvEvalWrapper(EnvGymBase):
                     avg_final_value = np.mean(self._final_eval_values[var]) 
                     min_final_value = np.min(self._final_eval_values[var])
                     max_final_value = np.max(self._final_eval_values[var])
-                    wandb.log({f"eval/avg_final_{var}": avg_final_value})
-                    wandb.log({f"eval/min_final_{var}": min_final_value})
-                    wandb.log({f"eval/max_final_{var}": max_final_value})
-                    print(f"\n ----- eval/avg_final_{var}: {avg_final_value} ----- ")
-                    print(f"\n ----- eval/min_final_{var}: {min_final_value} ----- ")
-                    print(f"\n ----- eval/max_final_{var}: {max_final_value} ----- ")
+                    if "min" in self.logs:
+                        wandb.log({f"eval/min_final_{var}": min_final_value})
+                        print(f"\n ----- eval/min_final_{var}: {min_final_value} ----- ")
+                    if "max" in self.logs:
+                        wandb.log({f"eval/max_final_{var}": max_final_value})
+                        print(f"\n ----- eval/max_final_{var}: {max_final_value} ----- ")
+                    if "avg" in self.logs: 
+                        wandb.log({f"eval/avg_final_{var}": avg_final_value}) 
+                        print(f"\n ----- eval/avg_final_{var}: {avg_final_value} ----- ") 
 
                     self._hist_mean_final_values[var].pop(0)
                     self._hist_mean_final_values[var].append(avg_final_value)

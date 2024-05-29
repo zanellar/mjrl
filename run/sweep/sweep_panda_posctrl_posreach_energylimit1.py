@@ -47,16 +47,16 @@ else:
 env_settings = dict(
     energy_margin = 10,  
     motor_torque_coefficient = 0,
-    k_task = 1,
-    k_energy = 1,
+    k_task = 2,
+    k_energy = 0.1,
     tank_min_threshold = 5,  
     energy_tank_init = 1000,
-    log_energy = False
+    eval_env = False
 )
 
 # Evaluation environment settings
 eval_env_settings = env_settings.copy()
-eval_env_settings["log_energy"] = True 
+eval_env_settings["eval_env"] = True 
 
 # Set reward id
 reward_id = Environment.POSITIVE_REWARD

@@ -23,9 +23,10 @@ class Environment(PandaPosCtrlPosReachEnv):
     self.motor_torque_coefficient = settings["motor_torque_coefficient"]
     self.k_task = settings["k_task"]
     self.k_energy = settings["k_energy"] 
-    self.log_energy = settings["log_energy"]
+    self.eval_env = settings["eval_env"]
     self.energy_out = 0
-  
+    self.energy_excess_ct = 0
+
     super(Environment, self).__init__(
       init_joint_config = init_joint_config, 
       max_episode_length = max_episode_length, 
@@ -115,11 +116,18 @@ class Environment(PandaPosCtrlPosReachEnv):
       self.reward = self.get_reward(self.info)
       self.terminated = False
       self.truncated = True 
+      self.energy_excess_ct += 1
        
-    wandb.log({f"eval/energy_exiting_normalized": self.energy_out - self.energy_margin})
+    if self.eval_env:
+      wandb.log({f"eval/energy_budget": self.energy_margin - self.energy_out})
 
     if self.truncated or self.terminated:
-      wandb.log({f"eval/final_energy_exiting_normalized": self.energy_out - self.energy_margin})
+      if self.eval_env:
+        wandb.log({f"eval/final_energy_budget": self.energy_margin - self.energy_out})
+        wandb.log({f"eval/energy_excess_ct": self.energy_excess_ct})
+      else:
+        wandb.log({f"rollout/energy_excess_ct": self.energy_excess_ct})
+        wandb.log({f"rollout/final_energy_budget": self.energy_margin - self.energy_out})
 
     # Additional info on energy consumption 
     self.info["energy_exiting"] = self.energy_out  
@@ -136,6 +144,6 @@ class Environment(PandaPosCtrlPosReachEnv):
 
     obs = np.concatenate([
       nominal_obs,
-      np.array([self.energy_out])
+      np.array([self.energy_out/self.energy_margin])
     ]).astype(np.float32)  
     return obs

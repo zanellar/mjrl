@@ -27,7 +27,8 @@ class Environment(PandaPosCtrlPosReachEnv):
     self.energy_out = 0
     self.energy_tank = self.energy_tank_init
     self.tank_min_threshold = settings["tank_min_threshold"]
-    self.log_energy = settings["log_energy"]
+    self.eval_env = settings["eval_env"]
+    self.energy_excess_ct = 0
   
     super(Environment, self).__init__(
       init_joint_config = init_joint_config, 
@@ -64,6 +65,10 @@ class Environment(PandaPosCtrlPosReachEnv):
     elif self.reward_id == self.POSITIVE_REWARD: 
 
       reward = 1/(0.01 + self.k_task*self.dist + self.k_energy*energy_penalty)   
+
+    # Additional energy penalty
+    if self.energy_out > self.energy_margin: 
+      reward = -10*abs(reward)
 
     return reward
  
@@ -123,12 +128,20 @@ class Environment(PandaPosCtrlPosReachEnv):
       self.reward = self.get_reward(self.info)
       self.terminated = False
       self.truncated = True 
+      self.energy_excess_ct += 1
 
-    wandb.log({f"eval/energy_exiting_normalized": self.energy_out - self.energy_margin})
+    if self.eval_env:
+      wandb.log({f"eval/energy_budget": self.energy_margin - self.energy_out})
 
     if self.truncated or self.terminated:
-      wandb.log({f"eval/final_energy_exiting_normalized": self.energy_out - self.energy_margin})
-      wandb.log({f"eval/final_energy_tank_normalized": self.energy_tank - self.tank_min_threshold}) 
+      if self.eval_env:
+        wandb.log({f"eval/final_energy_budget": self.energy_margin - self.energy_out})
+        wandb.log({f"eval/final_energy_tank": self.energy_tank - self.tank_min_threshold}) 
+        wandb.log({f"eval/energy_excess_ct": self.energy_excess_ct})
+      else:
+        wandb.log({f"rollout/energy_excess_ct": self.energy_excess_ct})
+        wandb.log({f"rollout/energy_excess_ct": self.energy_excess_ct})
+        wandb.log({f"rollout/final_energy_budget": self.energy_margin - self.energy_out})
 
     # Additional info on energy consumption 
     self.info["energy_exiting"] = self.energy_out  
@@ -145,6 +158,6 @@ class Environment(PandaPosCtrlPosReachEnv):
 
     obs = np.concatenate([
       nominal_obs,
-      np.array([self.energy_tank])
+      np.array([self.energy_tank/self.energy_tank_init])
     ]).astype(np.float32)  
     return obs
